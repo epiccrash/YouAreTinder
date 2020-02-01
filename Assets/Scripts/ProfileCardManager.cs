@@ -15,6 +15,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     [SerializeField] private float leftDragToDiscard = 0;
     [SerializeField] private float discardOffset = 0;
     [SerializeField] private float rightDragToMatch = 0;
+    [SerializeField] private CharacterGenerator generator = null;
     private List<ProfileCard> ProfileList = null;
     private ProfileCard LockedProfile = null;
     private int CurrentDisplayCard;
@@ -31,13 +32,16 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     void Start()
     {
         CurrentDisplayCard = SuitorProfilesCount;
+
+        LockedProfile = GenerateCard(LockedInPanel);
+        LockedProfile.SetStartPoint(new Vector2(0, 0));
+
         ProfileList = new List<ProfileCard>();
         for(int i = 0; i < SuitorProfilesCount; i++)
         {
             ProfileList.Add(GenerateCard(SpawnPanel));
         }
-        LockedProfile = GenerateCard(LockedInPanel);
-        LockedProfile.SetStartPoint(new Vector2(0,0));
+        
         ShowNextCard();
     }
 
@@ -69,6 +73,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         ProfileCard card = Instantiate(DefaultProfileCard, Vector3.zero, Quaternion.identity, Parent);
         card.GetComponent<RectTransform>().anchoredPosition = NewCardSpawnPoint.anchoredPosition;
         card.SetStartPoint(NewCardSpawnPoint.anchoredPosition);
+        card.InitializeCard(generator.Generate());
         return card;
     }
 

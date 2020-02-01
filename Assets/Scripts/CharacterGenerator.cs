@@ -57,13 +57,13 @@ public class CharacterGenerator : MonoBehaviour
         }
     }
 
-    void resetTarget()
+    public void resetTarget()
     {
         targetCharacterPrefsList.RemoveRange(0,targetCharacterPrefsList.Count);
         isTarget = true;
     }
 
-    void Generate()
+    public CharacterScript Generate()
     {
         int count = 0;//The number of common preference with the target
         string[] nameList = Random.Range(0, 2) == 0 ? male_names_list : female_names_list;
@@ -130,5 +130,6 @@ public class CharacterGenerator : MonoBehaviour
         character.GetComponent<CharacterScript>().HeightInInches = height;
         character.GetComponent<CharacterScript>().Preferences = prefsDict;
         character.GetComponent<CharacterScript>().PrintVariables();
+        return character.GetComponent<CharacterScript>();
     }
 }

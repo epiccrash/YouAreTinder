@@ -25,6 +25,11 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
         rect = GetComponent<RectTransform>();
     }
 
+    public void InitializeCard(CharacterScript script)
+    {
+        // initalize here
+    }
+
     public void SetStartPoint(Vector2 position)
     {
         startPos = position;
