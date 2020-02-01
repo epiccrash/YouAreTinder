@@ -32,6 +32,10 @@ public class CharacterGenerator : MonoBehaviour
     [SerializeField]
     private GameObject characterTemplate;
 
+    //is the next one the new target character
+    private bool isTarget = true;
+    private List<string> targetCharacterPrefsList = new List<string>(); 
+
     void Awake()
     {
         prefs = (TextAsset) Resources.Load(prefsFilename);
@@ -53,8 +57,15 @@ public class CharacterGenerator : MonoBehaviour
         }
     }
 
+    void resetTarget()
+    {
+        targetCharacterPrefsList.RemoveRange(0,targetCharacterPrefsList.Count);
+        isTarget = true;
+    }
+
     void Generate()
     {
+        int count = 0;//The number of common preference with the target
         string[] nameList = Random.Range(0, 2) == 0 ? male_names_list : female_names_list;
         string name = nameList[Random.Range(0, nameList.Length)];
 
@@ -62,28 +73,54 @@ public class CharacterGenerator : MonoBehaviour
         int height = Random.Range(min_height_in_inches, max_height_in_inches + 1);
 
         Dictionary<string, float> prefsDict = new Dictionary<string, float>();
-
+        string pref;
         int numLikes = Random.Range(1, 5);
         for (int i = 0; i < numLikes; i++)
         {
-            string pref = prefsList[Random.Range(0, prefsList.Length)];
-            while (prefsDict.ContainsKey(pref))
+            if (!isTarget && count < 3)
+            {
+                count++;
+                pref = targetCharacterPrefsList[Random.Range(0, targetCharacterPrefsList.Count)];
+            }
+            else
             {
                 pref = prefsList[Random.Range(0, prefsList.Length)];
             }
+            while (prefsDict.ContainsKey(pref))
+            { 
+                pref = prefsList[Random.Range(0, prefsList.Length)];
+
+            }
             float severity = Random.Range(1, 11) * 0.1f;
+            if (isTarget)
+            {
+                targetCharacterPrefsList.Add(pref);
+            }
             prefsDict.Add(pref, severity);
         }
 
         int numDislikes = Random.Range(1, 5);
         for (int i = 0; i < numDislikes; i++)
         {
-            string pref = prefsList[Random.Range(0, prefsList.Length)];
+            if (!isTarget && count < 3)
+            {
+                count++;
+                pref = targetCharacterPrefsList[Random.Range(0, targetCharacterPrefsList.Count)];
+            }
+            else
+            {
+                pref = prefsList[Random.Range(0, prefsList.Length)];
+            }
             while (prefsDict.ContainsKey(pref))
             {
                 pref = prefsList[Random.Range(0, prefsList.Length)];
             }
             float severity = Random.Range(-10, -1) * 0.1f;
+            if (isTarget)
+            {
+                targetCharacterPrefsList.Add(pref);
+                isTarget = false;
+            }
             prefsDict.Add(pref, severity);
         }
 
