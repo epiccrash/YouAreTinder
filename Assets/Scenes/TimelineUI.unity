@@ -327,7 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.8726415, b: 0.97398996, a: 1}
+  m_Color: {r: 0.9294118, g: 0.3019608, b: 0.24313727, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -855,9 +855,11 @@ MonoBehaviour:
   eventMarker: {fileID: 1922182351}
   lineRenderer: {fileID: 1245098191}
   textBox: {fileID: 1606258465}
-  p1Sprite: {fileID: 1857967393}
-  p2Sprite: {fileID: 551258215}
+  p1Sprite: {fileID: 1857967392}
+  p2Sprite: {fileID: 551258214}
   exitText: {fileID: 922537289}
+  background: {fileID: 749760563}
+  startBgColor: {r: 1, g: 1, b: 1, a: 0.8}
   spaceBetweenEvents: 350
   spaceBetweenText: 100
   pauseBetweenEvents: 1
@@ -877,7 +879,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxNumEvents: 5
-  compatability: 0.5
+  compatability: 0.9
   marriageThreshold: 0.8
   jitter: 0.1
   p1Name: Qatherine
