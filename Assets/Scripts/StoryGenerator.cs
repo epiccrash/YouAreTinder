@@ -21,7 +21,7 @@ public class StoryGenerator : MonoBehaviour
     public float GenerateCompatability()
     {
         init();
-        float result = Random.Range(0, 4)*0.1f;
+        float result = Random.Range(6, 11)*0.1f;
         float temp = 0f;
         int count = 1;
         foreach (KeyValuePair<string, float> k in c1Preferences)
@@ -30,11 +30,11 @@ public class StoryGenerator : MonoBehaviour
             if (c2Preferences.ContainsKey(k.Key))
             {
                 count += 1;
-                temp += Mathf.Abs(c2Preferences[k.Key] + k.Value)*0.3f;
-                //0-2,the higher the abs value, the more compatable
+                temp += Mathf.Abs(c2Preferences[k.Key] - k.Value)*0.3f;
+                //0-2,the higher the abs value, the less compatable
             }
         }
-        result += temp / count;
+        result -= temp / count;
         return result;
     }
 
