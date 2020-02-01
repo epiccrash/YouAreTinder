@@ -238,7 +238,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -710, y: 206.5}
+  m_AnchoredPosition: {x: -683, y: 206.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &551258216
@@ -433,8 +433,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -575,7 +575,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: 100}
+  m_AnchoredPosition: {x: 227, y: 100}
   m_SizeDelta: {x: 0, y: 7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1606258465
@@ -642,8 +642,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -731,7 +731,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 100}
+  m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1835752631
 GameObject:
@@ -746,6 +746,7 @@ GameObject:
   - component: {fileID: 1835752633}
   - component: {fileID: 1835752632}
   - component: {fileID: 1835752636}
+  - component: {fileID: 1835752637}
   m_Layer: 5
   m_Name: TimelineUI
   m_TagString: Untagged
@@ -851,22 +852,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3348c151c7674c35980ce757a105ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  events:
-  - Qatherine and Qaren went on a great first date!
-  - Qatherine and Qaren had an alright second date ...
-  - Qatherine and Qaren broke up :(
   eventMarker: {fileID: 1922182351}
   lineRenderer: {fileID: 1245098191}
   textBox: {fileID: 1606258465}
   p1Sprite: {fileID: 1857967393}
   p2Sprite: {fileID: 551258215}
   exitText: {fileID: 922537289}
-  spaceBetweenEvents: 450
+  spaceBetweenEvents: 350
   spaceBetweenText: 100
   pauseBetweenEvents: 1
   lineDrawTime: 1
   renderEventTime: 0.4
   jitterTime: 1
+--- !u!114 &1835752637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835752631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9be4ac4f455ab4f939c456768c9ebe4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxNumEvents: 5
+  compatability: 0.5
+  marriageThreshold: 0.8
+  jitter: 0.1
+  p1Name: Qatherine
+  p2Name: Qaren
+  timeline: {fileID: 1835752636}
 --- !u!1 &1857967392
 GameObject:
   m_ObjectHideFlags: 0
@@ -901,7 +917,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -813.4001, y: 206.5}
+  m_AnchoredPosition: {x: -786.4, y: 206.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1857967394

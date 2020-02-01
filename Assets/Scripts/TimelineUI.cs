@@ -6,8 +6,8 @@ using TMPro;
 
 public class TimelineUI : MonoBehaviour
 {
+    // TODO: grab information from the singleton
     // TODO: different colors for events based on if they're good or not
-    public string[] events;
     public GameObject eventMarker;
     public GameObject lineRenderer;
     public GameObject textBox;
@@ -22,6 +22,7 @@ public class TimelineUI : MonoBehaviour
     public float renderEventTime;
     public float jitterTime;
 
+    private string[] events;
     private float nextXPos;
     private float yPos;
     private float drawIter = 0.01f;
@@ -45,8 +46,12 @@ public class TimelineUI : MonoBehaviour
         canExit = true;
     }
 
-    private IEnumerator WaitAndPrint()
+    private IEnumerator PlayTimeline()
     {
+        nextXPos = lineRenderer.GetComponent<RectTransform>().localPosition.x;
+        yPos = lineRenderer.GetComponent<RectTransform>().localPosition.y;
+        lineRT = lineRenderer.GetComponent<RectTransform>();
+
         // Assume 
         int lineIter = (int)(lineDrawTime / drawIter);
         for(int i = 0; i < events.Length; i++) {
@@ -115,11 +120,6 @@ public class TimelineUI : MonoBehaviour
         eventMarker.SetActive(false);
         textBox.SetActive(false);
         exitText.faceColor = new Color(exitText.faceColor.r, exitText.faceColor.g, exitText.faceColor.b, 0);
-
-        nextXPos = lineRenderer.GetComponent<RectTransform>().localPosition.x;
-        yPos = lineRenderer.GetComponent<RectTransform>().localPosition.y;
-        lineRT = lineRenderer.GetComponent<RectTransform>();
-        StartCoroutine(WaitAndPrint());
     }
 
     private void onMouseDown()
@@ -127,5 +127,10 @@ public class TimelineUI : MonoBehaviour
         if(canExit) {
             // TODO: add scene to go back to
         }
+    }
+
+    public void TimelineAnimation(string[] e) {
+        events = e;
+        StartCoroutine(PlayTimeline());
     }
 }
