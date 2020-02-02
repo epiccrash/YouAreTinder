@@ -31,20 +31,11 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
         character = script;
         CardName.text = script.Name +" \\ " + script.Age.ToString();
         CardDescription.text = "";
-        foreach (KeyValuePair<string, float> k in script.Preferences)
-        {
-             CardDescription.text += $"My preference for {k.Key} is {k.Value}. \n";
-                       
-        }
-        //TODO: Delete the foreach loop and 
-        //comment me out when biogenerator is init by Joey! 
-        //                                      --- The last words of Sebastian before he left
-        //foreach(string s in script.bio)
-        //{
-        //    CardDescription.text += s + "\n";
-        //}
-     
 
+        foreach(string s in script.bio)
+        {
+            CardDescription.text += s + "\n";
+        }
     }
 
     public void SetStartPoint(Vector2 position)

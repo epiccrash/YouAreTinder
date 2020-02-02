@@ -38,6 +38,7 @@ public class TimelineUI : MonoBehaviour
     private RectTransform lineRT;
     private RectTransform p1SpriteRT;
     private RectTransform p2SpriteRT;
+    private bool fastForward = false;
     private bool canExit = false;
 
     private float drawIter = 0.01f;
@@ -50,6 +51,8 @@ public class TimelineUI : MonoBehaviour
 
     private IEnumerator ActivateExit()
     {
+        canExit = true;
+
         // Fade text in + bring it down
         for(int j = 0; j < fadeIn; j++) {
             float frac = (float)j / (float)fadeIn;
@@ -59,7 +62,6 @@ public class TimelineUI : MonoBehaviour
             yield return new WaitForSeconds(drawIter);
         }
 
-        canExit = true;
     }
 
     private IEnumerator ChangeBackground(bool good, bool final)
@@ -82,7 +84,7 @@ public class TimelineUI : MonoBehaviour
         for(int i = 0; i < fadeIn; i++) {
             background.color = Color.Lerp(ogColor, newColor, colorF);
             colorF += 1.0f / (float)fadeIn;
-
+            
             yield return new WaitForSeconds(drawIter);
         }
     }
@@ -128,22 +130,23 @@ public class TimelineUI : MonoBehaviour
         // Pulse out
         float frac = 1.0f / (float)pulseSpeed;
         for(int k = 0; k < pulseSpeed; k++) {
-                float lerp = Mathf.Lerp(1.0f, pulseAmount, frac);
-                markerRT.localScale = new Vector3(lerp, lerp, 1);
-                Debug.Log(markerRT.localScale.x);
+            float lerp = Mathf.Lerp(1.0f, pulseAmount, frac);
+            markerRT.localScale = new Vector3(lerp, lerp, 1);
+            Debug.Log(markerRT.localScale.x);
 
-                frac += 1.0f / (float)pulseSpeed;
-                yield return new WaitForEndOfFrame();
+            frac += 1.0f / (float)pulseSpeed;
+            yield return new WaitForEndOfFrame();
         }
 
         // Pulse back in
-        frac =1.0f / (float)pulseSpeed;
+        float currScale = markerRT.localScale.x;
+        frac = 1.0f / (float)pulseSpeed;
         for(int k = 0; k < pulseSpeed; k++) {
-                float lerp = Mathf.Lerp(pulseAmount, 1.0f, frac);
-                markerRT.localScale = new Vector3(lerp, lerp, 1);
+            float lerp = Mathf.Lerp(currScale, 1.0f, frac);
+            markerRT.localScale = new Vector3(lerp, lerp, 1);
 
-                frac += 1.0f / (float)pulseSpeed;
-                yield return new WaitForEndOfFrame();
+            frac += 1.0f / (float)pulseSpeed;
+            yield return new WaitForEndOfFrame();
         }
     }
 
@@ -167,13 +170,13 @@ public class TimelineUI : MonoBehaviour
 
         yield return new WaitForSeconds(pauseBetweenEvents);
         
-        // TODO: drop in from top
         p1Sprite.SetActive(true);
         p2Sprite.SetActive(true);
-        yield return new WaitForSeconds(pauseBetweenEvents);
+        if(!fastForward) yield return new WaitForSeconds(pauseBetweenEvents);
         
         int lineIter = (int)(lineDrawTime / drawIter);
         for(int i = 0; i < events.Length; i++) {
+            fastForward = false;
             // Render event marker
             GameObject nEventMarker = Instantiate (eventMarker);
             nEventMarker.transform.parent = gameObject.transform;
@@ -191,7 +194,7 @@ public class TimelineUI : MonoBehaviour
                 StartCoroutine(ShakeEventMarker(nEventMarker));
             }
 
-            yield return new WaitForSeconds(renderEventTime);
+            if(!fastForward) yield return new WaitForSeconds(renderEventTime);
 
             // Render text
             GameObject nTextBox = Instantiate (textBox);
@@ -214,11 +217,11 @@ public class TimelineUI : MonoBehaviour
                 float newYPos = Mathf.Lerp(nTextBoxRT.localPosition.y, yPos - spaceBetweenText, frac);
                 nTextBoxRT.localPosition = new Vector3(nextXPos, newYPos, 0);
 
-                yield return new WaitForSeconds(drawIter);
+                if(!fastForward) yield return new WaitForSeconds(drawIter);
             }
 
             // Wait
-            yield return new WaitForSeconds(pauseBetweenEvents + Random.Range(0.0f, jitterTime));
+            if(!fastForward) yield return new WaitForSeconds(pauseBetweenEvents + Random.Range(0.0f, jitterTime));
             nextXPos += spaceBetweenEvents;
             
             // Lengthen line, move people's images
@@ -236,7 +239,7 @@ public class TimelineUI : MonoBehaviour
                     lineRT.localPosition = new Vector3(lineRT.localPosition.x + lineXOffset, yPos, 0);
                     p1SpriteRT.localPosition = new Vector3(p1SpriteRT.localPosition.x + spaceBetweenEvents / lineIter, p1SpriteRT.localPosition.y, 0);
                     p2SpriteRT.localPosition = new Vector3(p2SpriteRT.localPosition.x + spaceBetweenEvents / lineIter, p2SpriteRT.localPosition.y, 0);
-                    yield return new WaitForSeconds(drawIter);
+                    if(!fastForward) yield return new WaitForSeconds(drawIter);
                 }
             }
         }
@@ -256,9 +259,11 @@ public class TimelineUI : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0) && canExit) {
-            // TODO: add scene to go back to
-            SceneManager.LoadScene(0);
+        if(Input.GetMouseButtonDown(0)) {
+            if(canExit) {
+                SceneManager.LoadScene(0);
+            }
+            fastForward = true;
         }
     }
 
