@@ -9,11 +9,7 @@ public class CharacterScript : MonoBehaviour
     public int HeightInInches { get; set; }
     public Dictionary<string, float> Preferences { get; set; }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+    public List<string> bio { get; set;}
 
     public void PrintVariables()
     {

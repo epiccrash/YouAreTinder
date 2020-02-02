@@ -34,7 +34,9 @@ public class CharacterGenerator : MonoBehaviour
 
     //is the next one the new target character
     private bool isTarget = true;
-    private List<string> targetCharacterPrefsList = new List<string>(); 
+    private List<string> targetCharacterPrefsList = new List<string>();
+
+    private BioGenerator bioGenerator;
 
     void Awake()
     {
@@ -46,6 +48,11 @@ public class CharacterGenerator : MonoBehaviour
 
         female_names = (TextAsset) Resources.Load(humanFemaleNames);
         female_names_list = female_names.text.Replace("\n","").Split(","[0]);
+    }
+
+    private void Start()
+    {
+        bioGenerator = GetComponent<BioGenerator>();
     }
 
     // Update is called once per frame
@@ -130,6 +137,10 @@ public class CharacterGenerator : MonoBehaviour
         character.GetComponent<CharacterScript>().HeightInInches = height;
         character.GetComponent<CharacterScript>().Preferences = prefsDict;
         character.GetComponent<CharacterScript>().PrintVariables();
+        //character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict);
+        //TODO: comment me out when bioGenerator.cs is init by Joey! 
+        //                                      --- The last words of Sebastian before he left
+
         return character.GetComponent<CharacterScript>();
     }
 }
