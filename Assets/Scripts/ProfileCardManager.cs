@@ -21,6 +21,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     [SerializeField] private StoryGenerator storygenerator = null;
     private List<ProfileCard> ProfileList = null;
     private ProfileCard LockedProfile = null;
+    private ProfileCard Match = null;
     private int CurrentDisplayCard;
     bool matched = false;
 
@@ -38,15 +39,22 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     {
         CurrentDisplayCard = SuitorProfilesCount-1;
 
-
         LockedProfile = GenerateCard(LockedInPanel); 
         LockedProfile.SetStartPoint(new Vector2(0, 0));
 
-
         ProfileList = new List<ProfileCard>();
+
+        int matchingCardNum = Random.Range(0, SuitorProfilesCount);
+
         for(int i = 0; i < SuitorProfilesCount; i++)
         {
-            ProfileList.Add(GenerateCard(SpawnPanel));
+            if (i == matchingCardNum)
+            {
+                ProfileList.Add(GenerateCardSpecial(SpawnPanel));
+            } else
+            {
+                ProfileList.Add(GenerateCard(SpawnPanel));
+            }
             if(i>0)ProfileList[i].scrollbar.value = 0;
         }
         
@@ -81,7 +89,16 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         ProfileCard card = Instantiate(DefaultProfileCard, Vector3.zero, Quaternion.identity, Parent);
         card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
-        card.InitializeCard(chargenerator.Generate());
+        card.InitializeCard(chargenerator.Generate(null));
+        return card;
+    }
+
+    ProfileCard GenerateCardSpecial(Transform Parent)
+    {
+        ProfileCard card = Instantiate(DefaultProfileCard, Vector3.zero, Quaternion.identity, Parent);
+        card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
+        card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
+        card.InitializeCard(chargenerator.Generate(LockedProfile.character));
         return card;
     }
 

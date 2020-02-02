@@ -30,6 +30,16 @@ public class StoryGenerator : MonoBehaviour
         }
         Debug.Log(temp / count);
         result -= temp / count;
+
+        // Age gap modifiers
+        int ageGap = Mathf.Abs(c1.Age - c2.Age);
+        if (ageGap >= 5)
+        {
+            result -= 0.01f * Mathf.Abs(c1.Age - c2.Age);
+        }
+
+        result = Mathf.Clamp(result, -1, 1);
+
         Debug.Log(result);
         return result;
     }

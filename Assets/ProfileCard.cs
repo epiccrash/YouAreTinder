@@ -30,19 +30,24 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
 
     public void InitializeCard(CharacterScript script)
     {
+        Color proxy = script.profile.LightColor;
+
         character = script;
         CardName.text = script.Name +" \\ " + script.Age.ToString();
-        CardName.color = script.profile.LightColor;
+        proxy.a = 1;
+        CardName.color = proxy;
         CardDescription.text = "";
 
         foreach( Image c in CardLightBackings)
         {
-            c.color = script.profile.LightColor;
+            c.color = proxy;
         }
 
         foreach (Image c in CardDarkBackings)
         {
-            c.color = script.profile.DarkColor;
+            proxy = script.profile.DarkColor;
+            proxy.a = 1;
+            c.color = proxy;
         }
 
         CardPortrait.sprite = script.profile.PlayerIcon;

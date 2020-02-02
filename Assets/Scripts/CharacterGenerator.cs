@@ -57,22 +57,13 @@ public class CharacterGenerator : MonoBehaviour
         bioGenerator = GetComponent<BioGenerator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("g"))
-        {
-            Generate();
-        }
-    }
-
     public void resetTarget()
     {
         targetCharacterPrefsList.RemoveRange(0,targetCharacterPrefsList.Count);
         isTarget = true;
     }
 
-    public CharacterScript Generate()
+    public CharacterScript Generate(CharacterScript c)
     {
         ProfilePictureData prof = all_profiles[Random.Range(0,all_profiles.Length)];
         int count = 0;//The number of common preference with the target
@@ -84,7 +75,32 @@ public class CharacterGenerator : MonoBehaviour
 
         Dictionary<string, float> prefsDict = new Dictionary<string, float>();
         string pref;
-        int numLikes = Random.Range(1, 5);
+
+        int maxRollRange = 4;
+
+        if (c != null)
+        {
+            foreach (KeyValuePair<string, float> kv in c.Preferences)
+            {
+                if (kv.Value >= 0.5f)
+                {
+                    prefsDict.Add(kv.Key, kv.Value);
+                    break;
+                }
+            }
+
+            foreach (KeyValuePair<string, float> kv in c.Preferences)
+            {
+                if (kv.Value <= -0.5f)
+                {
+                    prefsDict.Add(kv.Key, kv.Value);
+                    break;
+                }
+            }
+            maxRollRange = 3;
+        }
+
+        int numLikes = Random.Range(1, maxRollRange);
         for (int i = 0; i < numLikes; i++)
         {
             if (!isTarget && count < 3)
@@ -100,7 +116,7 @@ public class CharacterGenerator : MonoBehaviour
             { 
                 pref = prefsList[Random.Range(0, prefsList.Length)];
             }
-            float severity = Random.Range(1, 11) * 0.1f;
+            float severity = i == 0 ? Random.Range(5, 11) * 0.1f : Random.Range(1, 11) * 0.1f;
             if (isTarget)
             {
                 targetCharacterPrefsList.Add(pref);
@@ -108,7 +124,7 @@ public class CharacterGenerator : MonoBehaviour
             prefsDict.Add(pref, severity);
         }
 
-        int numDislikes = Random.Range(1, 5);
+        int numDislikes = Random.Range(1, maxRollRange);
         for (int i = 0; i < numDislikes; i++)
         {
             if (!isTarget && count < 3)
@@ -124,7 +140,7 @@ public class CharacterGenerator : MonoBehaviour
             {
                 pref = prefsList[Random.Range(0, prefsList.Length)];
             }
-            float severity = Random.Range(-10, -1) * 0.1f;
+            float severity = i == 0 ? Random.Range(5, 11) * -0.1f : Random.Range(1, 11) * -0.1f;
             if (isTarget)
             {
                 targetCharacterPrefsList.Add(pref);
@@ -133,12 +149,24 @@ public class CharacterGenerator : MonoBehaviour
             prefsDict.Add(pref, severity);
         }
 
+        int styleInt = Random.Range(0, 3);
+
         GameObject character = Instantiate(characterTemplate);
         character.GetComponent<CharacterScript>().Name = name;
         character.GetComponent<CharacterScript>().Age = age;
         character.GetComponent<CharacterScript>().HeightInInches = height;
         character.GetComponent<CharacterScript>().Preferences = prefsDict;
-        character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict);
+        character.GetComponent<CharacterScript>().StyleInt = styleInt;
+        if (c != null)
+        {
+            character.GetComponent<CharacterScript>().Age = (age >= c.Age - 5 && age <= c.Age + 5) ? age : Mathf.Clamp(c.Age + Random.Range(-5, 6), min_age, max_age);
+            while (character.GetComponent<CharacterScript>().StyleInt == c.StyleInt)
+            {
+                character.GetComponent<CharacterScript>().StyleInt = Random.Range(0, 3);
+            }
+            character.GetComponent<CharacterScript>().Match = true;
+        }
+        character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict, styleInt);
         character.GetComponent<CharacterScript>().profile = prof;
         
         return character.GetComponent<CharacterScript>();

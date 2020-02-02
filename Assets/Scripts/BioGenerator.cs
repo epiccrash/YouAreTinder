@@ -232,10 +232,10 @@ public class BioGenerator : MonoBehaviour
     //The list within the list, index 0,1,2 -writing style 
 
 
-public List<string> GenerateBio(Dictionary<string,float> prefsDict)
+    public List<string> GenerateBio(Dictionary<string,float> prefsDict, int styleInt)
     {
         List<string> bioList = new List<string>();
-        int styleInt = Random.Range(0, 3);//writing style
+
         foreach (KeyValuePair<string, float> k in prefsDict)
         {
             //determined the high low value of this preference

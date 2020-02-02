@@ -11,6 +11,8 @@ public class CharacterScript : MonoBehaviour
     public ProfilePictureData profile;
 
     public List<string> bio { get; set;}
+    public int StyleInt { get; set; }   // Writing style
+    public bool Match { get; set; }     // Are they the match?
 
     public void PrintVariables()
     {
