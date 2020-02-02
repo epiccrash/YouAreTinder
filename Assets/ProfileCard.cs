@@ -27,7 +27,14 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
 
     public void InitializeCard(CharacterScript script)
     {
-        // initalize here
+        CardName.text = script.Name;
+        CardAge.text = script.Age.ToString();
+        CardDescription.text = "";
+        foreach (KeyValuePair<string, float> k in script.Preferences)
+        {
+             CardDescription.text += $"My preference for {k.Key} is {k.Value}. \n";
+        }
+
     }
 
     public void SetStartPoint(Vector2 position)
