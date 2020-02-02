@@ -21,6 +21,7 @@ public class EventCreator : MonoBehaviour
     private string mehOutcomesFilename = "meh_outcomes";
     private string goodOutcomesFilename = "good_outcomes";
     private string greatOutcomesFilename = "great_outcomes";
+    private string premarriageFilename = "premarriage_events";
     private string goodBreakupFilename = "good_breakup_flavor";
     private string mediumBreakupFilename = "medium_breakup_flavor";
     private string badBreakupFilename = "bad_breakup_flavor";
@@ -35,6 +36,7 @@ public class EventCreator : MonoBehaviour
     private string[] mehOutcomesText;
     private string[] goodOutcomesText;
     private string[] greatOutcomesText;
+    private string[] premarriageText;
     private string[] goodBreakupText;
     private string[] mediumBreakupText;
     private string[] badBreakupText;
@@ -70,6 +72,16 @@ public class EventCreator : MonoBehaviour
         }
 
         return GetDateDescriptor(dateNum) + " " + outcome;
+    }
+
+    private string GetPremarriageEvent() {
+        string premarriage = premarriageText[Mathf.Clamp((int)Random.Range(0, premarriageText.Length), 0, premarriageText.Length - 1)];
+        StringBuilder textB = new StringBuilder(premarriage);
+        textB.Replace("*", p1Name);
+        textB.Replace("^", p2Name);
+        premarriage = textB.ToString().Replace('\n', ' ');
+
+        return premarriage;
     }
 
     private string GetBreakupEvent() {
@@ -145,7 +157,7 @@ public class EventCreator : MonoBehaviour
         // Generate event before break-up (good or bad depending on final),
         // and generate final outcome
         if(compatibility >= marriageThreshold) {
-            events.Add(GetGoodEvent(dateNum, 1));
+            events.Add(GetPremarriageEvent());
             eventOutcomes.Add(true);
             events.Add(p1Name + " and " + p2Name + " got married!");
             eventOutcomes.Add(true);
@@ -173,6 +185,7 @@ public class EventCreator : MonoBehaviour
         mehOutcomesText = ((TextAsset) Resources.Load(mehOutcomesFilename)).text.Split(","[0]);
         goodOutcomesText = ((TextAsset) Resources.Load(goodOutcomesFilename)).text.Split(","[0]);
         greatOutcomesText = ((TextAsset) Resources.Load(greatOutcomesFilename)).text.Split(","[0]);
+        premarriageText = ((TextAsset) Resources.Load(premarriageFilename)).text.Split(","[0]);
         goodBreakupText = ((TextAsset) Resources.Load(goodBreakupFilename)).text.Split(","[0]);
         mediumBreakupText = ((TextAsset) Resources.Load(mediumBreakupFilename)).text.Split(","[0]);
         badBreakupText = ((TextAsset) Resources.Load(badBreakupFilename)).text.Split(","[0]);
