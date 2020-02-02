@@ -185,7 +185,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 800}
+  m_SizeDelta: {x: 0, y: 820}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5529213585255227352
 CanvasRenderer:
@@ -239,7 +239,7 @@ MonoBehaviour:
     m_Left: 30
     m_Right: 30
     m_Top: 30
-    m_Bottom: 30
+    m_Bottom: 50
   m_ChildAlignment: 4
   m_Spacing: 10
   m_ChildForceExpandWidth: 1
@@ -429,7 +429,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 680, y: 60}
+  m_SizeDelta: {x: 680, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7339946880250766841
 CanvasRenderer:
@@ -544,6 +544,7 @@ MonoBehaviour:
   locked: 0
   lockedMouseTex: {fileID: 2800000, guid: 2d56ee55da84c7b4a94256076b4ed7e6, type: 3}
   unlockedMouseTex: {fileID: 2800000, guid: fb82be49c55117a47b07fcf8598015e8, type: 3}
+  dragging: 0
   startPos: {x: 0, y: 0}
   returnPos: {x: 0, y: 0}
 --- !u!1 &7339946880867091384
@@ -727,7 +728,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -1003,7 +1004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -20}
+  m_AnchoredPosition: {x: 0, y: -30}
   m_SizeDelta: {x: -80, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7339946881586128838
@@ -1067,8 +1068,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 34
+  m_fontSizeBase: 34
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1113,7 +1114,7 @@ MonoBehaviour:
     spaceCount: 90
     wordCount: 91
     linkCount: 0
-    lineCount: 12
+    lineCount: 14
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
