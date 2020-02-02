@@ -31,7 +31,11 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         MatchmakingState.Instance.compatibility = storygenerator.GenerateCompatability(LockedProfile.character,  ProfileList[CurrentDisplayCard].character);
         MatchmakingState.Instance.name1 = LockedProfile.character.Name.Replace(((char)13).ToString(), "");
         MatchmakingState.Instance.name2 = ProfileList[CurrentDisplayCard].character.Name.Replace(((char)13).ToString(), "");
-        SceneManager.LoadScene(1);
+        MatchmakingState.Instance.profile1 = LockedProfile.character.profile.PlayerIcon;
+        MatchmakingState.Instance.profile2 = ProfileList[CurrentDisplayCard].character.profile.PlayerIcon;
+        //Have to called generate compatability before generateSharedPreferences
+        MatchmakingState.Instance.sharedPreferences = storygenerator.generateSharedPreferences();
+        SceneManager.LoadScene(2);
     }
 
     // Start is called before the first frame update
@@ -52,6 +56,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         {
             if (i == matchingCardNum)
             {
+                print("reached with: " + i);
                 ProfileList.Add(GenerateCardSpecial(SpawnPanel));
             } else
             {

@@ -35,6 +35,7 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
         rect = GetComponent<RectTransform>();
     }
 
+  
     public void InitializeCard(CharacterScript script)
     {
         Color proxy = script.profile.LightColor;
