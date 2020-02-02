@@ -124,7 +124,6 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
         startMousePos = Input.mousePosition;
         dragging = true;
     }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         mousein = true;
@@ -133,5 +132,13 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
     public void OnPointerExit(PointerEventData eventData)
     {
         mousein = false;
+    }
+
+    public void SetFont(TMP_FontAsset f)
+    {
+        foreach (TextMeshProUGUI t in GetComponentsInChildren<TextMeshProUGUI>())
+        {
+            t.font = f;
+        }
     }
 }
