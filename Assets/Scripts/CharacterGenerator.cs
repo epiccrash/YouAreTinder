@@ -135,7 +135,6 @@ public class CharacterGenerator : MonoBehaviour
         character.GetComponent<CharacterScript>().Age = age;
         character.GetComponent<CharacterScript>().HeightInInches = height;
         character.GetComponent<CharacterScript>().Preferences = prefsDict;
-        character.GetComponent<CharacterScript>().PrintVariables();
         character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict);
         
         return character.GetComponent<CharacterScript>();
