@@ -7,7 +7,27 @@ public class StoryGenerator : MonoBehaviour
 
     private Dictionary<string, float> c1Preferences;
     private Dictionary<string, float> c2Preferences;
-
+    private List<string> sharedPreferences;
+    public Dictionary<string, float> generateSharedPreferences()
+    {
+        Dictionary<string, float> result = new Dictionary<string, float>();
+        //Have to called generate compatability before generateSharedPreferences
+        foreach (string s in sharedPreferences)
+        {
+            if(c1Preferences[s] * c2Preferences[s] < 0)
+            {
+                result[s] = 0; // different prefernces
+            } else if (c1Preferences[s] < 0)
+            {
+                result[s] = -1; //Both dislike
+            }
+            else
+            {
+                result[s] = 1; // both like
+            }
+        }
+        return result;
+    }
     public float GenerateCompatability(CharacterScript c1, CharacterScript c2)
     {
         c1Preferences = c1.Preferences;
@@ -26,9 +46,10 @@ public class StoryGenerator : MonoBehaviour
                 temp += Mathf.Abs(c2Preferences[k.Key] - k.Value)*0.3f;
                 //0-2,the higher the abs value, the less compatable
                 Debug.Log(c2Preferences[k.Key]+" " + " "+ k.Value);
+                sharedPreferences.Add(k.Key);
             }
         }
-        Debug.Log(temp / count);
+      
         result -= temp / count;
 
         // Age gap modifiers
@@ -40,7 +61,7 @@ public class StoryGenerator : MonoBehaviour
 
         result = Mathf.Clamp(result, -1, 1);
 
-        Debug.Log(result);
+    
         return result;
     }
 }

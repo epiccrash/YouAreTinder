@@ -41,6 +41,8 @@ public class EventCreator : MonoBehaviour
     private string[] mediumBreakupText;
     private string[] badBreakupText;
 
+    private Dictionary<string, float> sharedPreferences;
+
     private string GetDateDescriptor(int dateNum) {
         string text = datesText[Mathf.Clamp((int)Random.Range(0, datesText.Length), 0, datesText.Length - 1)];
         StringBuilder textB = new StringBuilder(text);
@@ -179,7 +181,7 @@ public class EventCreator : MonoBehaviour
         p1Name = MatchmakingState.Instance.name1;
         p2Name = MatchmakingState.Instance.name2;
         compatibility = MatchmakingState.Instance.compatibility;
-
+        sharedPreferences = MatchmakingState.Instance.sharedPreferences;
         datesText = ((TextAsset) Resources.Load(datesFilename)).text.Split(","[0]);
         badOutcomesText = ((TextAsset) Resources.Load(badOutcomesFilename)).text.Split(","[0]);
         mehOutcomesText = ((TextAsset) Resources.Load(mehOutcomesFilename)).text.Split(","[0]);

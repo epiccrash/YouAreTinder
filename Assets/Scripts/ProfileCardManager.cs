@@ -31,6 +31,8 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         MatchmakingState.Instance.compatibility = storygenerator.GenerateCompatability(LockedProfile.character,  ProfileList[CurrentDisplayCard].character);
         MatchmakingState.Instance.name1 = LockedProfile.character.Name.Replace(((char)13).ToString(), "");
         MatchmakingState.Instance.name2 = ProfileList[CurrentDisplayCard].character.Name.Replace(((char)13).ToString(), "");
+        //Have to called generate compatability before generateSharedPreferences
+        MatchmakingState.Instance.sharedPreferences = storygenerator.generateSharedPreferences();
         SceneManager.LoadScene(1);
     }
 
