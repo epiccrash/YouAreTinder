@@ -33,7 +33,7 @@ public class StoryGenerator : MonoBehaviour
         c1Preferences = c1.Preferences;
         c2Preferences = c2.Preferences;
         sharedPreferences = new List<string>();
-        float result = Random.Range(6, 9)*0.1f;
+        float result = Random.Range(5, 9)*0.1f;
         float temp = 0.0f;
         int count = 1;
         foreach (KeyValuePair<string, float> k in c1Preferences)
@@ -70,7 +70,7 @@ public class StoryGenerator : MonoBehaviour
             result -= 0.01f * Mathf.Abs(c1.Age - c2.Age);
         }
 
-        result = Mathf.Clamp(result, -1, 1);
+        result = Mathf.Clamp(result, 0, 1);
 
         print(result);
         return result;
