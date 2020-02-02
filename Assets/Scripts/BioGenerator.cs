@@ -27,7 +27,7 @@ public List<string> GenerateBio(Dictionary<string,float> prefsDict)
                 level = 1;
             }
             else
-            {   //if we have average options 
+            {   //if we have average options, comment me out
                 //level = 2;
                 continue;
             }

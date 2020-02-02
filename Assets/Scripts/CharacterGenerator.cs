@@ -137,7 +137,10 @@ public class CharacterGenerator : MonoBehaviour
         character.GetComponent<CharacterScript>().HeightInInches = height;
         character.GetComponent<CharacterScript>().Preferences = prefsDict;
         character.GetComponent<CharacterScript>().PrintVariables();
-        character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict);
+        //character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict);
+        //TODO: comment me out when bioGenerator.cs is init by Joey! 
+        //                                      --- The last words of Sebastian before he left
+
         return character.GetComponent<CharacterScript>();
     }
 }
