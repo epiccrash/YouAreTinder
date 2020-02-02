@@ -225,9 +225,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   min_age: 18
-  max_age: 55
+  max_age: 34
   min_height_in_inches: 2
   max_height_in_inches: 100
+  all_profiles:
+  - {fileID: 11400000, guid: 2e243008e374ace408bd8a805a54cdbf, type: 2}
+  - {fileID: 11400000, guid: c136fdfb70569864b8955c58e6be7139, type: 2}
+  - {fileID: 11400000, guid: e5b10aef7aa76b6428d7bf5aad436beb, type: 2}
+  - {fileID: 11400000, guid: a1071f1d9885068498cefe245609338b, type: 2}
+  - {fileID: 11400000, guid: 2c6086170b2405443882f48bb5f3a044, type: 2}
+  - {fileID: 11400000, guid: a7929ead57cd52749b0352760dfc5cac, type: 2}
   characterTemplate: {fileID: 5401794044344017507, guid: dff327373803d3b47981bbd03c19aa3a,
     type: 3}
 --- !u!4 &117617556
@@ -868,7 +875,7 @@ MonoBehaviour:
   MatchHeart: {fileID: 1171143351}
   leftDragToDiscard: 500
   discardOffset: 1000
-  rightDragToMatch: 1000
+  rightDragToMatch: 800
   chargenerator: {fileID: 117617555}
   storygenerator: {fileID: 497562283}
 --- !u!4 &2099705947

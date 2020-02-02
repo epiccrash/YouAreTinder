@@ -8,6 +8,7 @@ public class CharacterScript : MonoBehaviour
     public int Age { get; set; }
     public int HeightInInches { get; set; }
     public Dictionary<string, float> Preferences { get; set; }
+    public ProfilePictureData profile;
 
     public List<string> bio { get; set;}
 

@@ -10,6 +10,8 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
     public Image CardPortrait = null;
     public TextMeshProUGUI CardName = null;
     public TextMeshProUGUI CardDescription = null;
+    public Image[] CardDarkBackings;
+    public Image[] CardLightBackings;
     public bool active = false;
     public Scrollbar scrollbar = null;
     public CharacterScript character = null;
@@ -30,7 +32,20 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
     {
         character = script;
         CardName.text = script.Name +" \\ " + script.Age.ToString();
+        CardName.color = script.profile.LightColor;
         CardDescription.text = "";
+
+        foreach( Image c in CardLightBackings)
+        {
+            c.color = script.profile.LightColor;
+        }
+
+        foreach (Image c in CardDarkBackings)
+        {
+            c.color = script.profile.DarkColor;
+        }
+
+        CardPortrait.sprite = script.profile.PlayerIcon;
 
         foreach(string s in script.bio)
         {
@@ -51,7 +66,6 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
             if (Input.GetMouseButton(0))
             {
                 rect.anchoredPosition = new Vector2(Input.mousePosition.x - startMousePos.x, 0) + dragPos;
-
             }
             else
             {

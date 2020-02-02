@@ -506,8 +506,14 @@ MonoBehaviour:
   CardPortrait: {fileID: 7339946880867091386}
   CardName: {fileID: 7339946881099319881}
   CardDescription: {fileID: 7339946881586128839}
+  CardDarkBackings:
+  - {fileID: 1107506929253622773}
+  - {fileID: 4693331565252117676}
+  CardLightBackings:
+  - {fileID: 5964920633326184448}
   active: 0
   scrollbar: {fileID: 7339946880704473626}
+  character: {fileID: 0}
   startPos: {x: 0, y: 0}
   returnPos: {x: 0, y: 0}
 --- !u!1 &7339946880867091384

@@ -20,6 +20,8 @@ public class CharacterGenerator : MonoBehaviour
     [SerializeField]
     private int max_height_in_inches;
 
+    public ProfilePictureData[] all_profiles;
+
     private TextAsset prefs;
     private string[] prefsList;
 
@@ -72,8 +74,9 @@ public class CharacterGenerator : MonoBehaviour
 
     public CharacterScript Generate()
     {
+        ProfilePictureData prof = all_profiles[Random.Range(0,all_profiles.Length)];
         int count = 0;//The number of common preference with the target
-        string[] nameList = Random.Range(0, 2) == 0 ? male_names_list : female_names_list;
+        string[] nameList = prof.IsMale ? male_names_list : female_names_list;
         string name = nameList[Random.Range(0, nameList.Length)];
 
         int age = Random.Range(min_age, max_age + 1);
@@ -136,6 +139,7 @@ public class CharacterGenerator : MonoBehaviour
         character.GetComponent<CharacterScript>().HeightInInches = height;
         character.GetComponent<CharacterScript>().Preferences = prefsDict;
         character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict);
+        character.GetComponent<CharacterScript>().profile = prof;
         
         return character.GetComponent<CharacterScript>();
     }
