@@ -11,6 +11,8 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
     public TextMeshProUGUI CardName = null;
     public TextMeshProUGUI CardDescription = null;
     public bool active = false;
+    public Scrollbar scrollbar = null;
+    public CharacterScript character = null;
 
     RectTransform rect;
     private bool dragging;
@@ -26,6 +28,7 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
 
     public void InitializeCard(CharacterScript script)
     {
+        character = script;
         CardName.text = script.Name +" \\ " + script.Age.ToString();
         CardDescription.text = "";
 
