@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TimelineUI : MonoBehaviour
 {
@@ -253,10 +254,11 @@ public class TimelineUI : MonoBehaviour
         exitText.faceColor = new Color(exitText.faceColor.r, exitText.faceColor.g, exitText.faceColor.b, 0);
     }
 
-    private void onMouseDown()
+    private void Update()
     {
-        if(canExit) {
+        if(Input.GetMouseButtonDown(0) && canExit) {
             // TODO: add scene to go back to
+            SceneManager.LoadScene(0);
         }
     }
 

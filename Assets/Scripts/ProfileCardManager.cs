@@ -28,8 +28,8 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     {
         yield return new WaitForSeconds(1.0f);
         MatchmakingState.Instance.compatibility = storygenerator.GenerateCompatability(LockedProfile.character,  ProfileList[CurrentDisplayCard].character);
-         MatchmakingState.Instance.name1 = LockedProfile.name;
-        MatchmakingState.Instance.name2 = ProfileList[CurrentDisplayCard].name;
+         MatchmakingState.Instance.name1 = LockedProfile.character.Name;
+        MatchmakingState.Instance.name2 = ProfileList[CurrentDisplayCard].character.Name;
         SceneManager.LoadScene(1);
     }
 

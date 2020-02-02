@@ -885,11 +885,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxNumEvents: 5
-  compatability: 0.7
-  marriageThreshold: 0.8
+  marriageThreshold: 0.6
   jitter: 0.05
-  p1Name: Qatherine
-  p2Name: Qaren
   timeline: {fileID: 1835752636}
 --- !u!1 &1857967392
 GameObject:
