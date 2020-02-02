@@ -16,6 +16,11 @@ public class TimelineUI : MonoBehaviour
     public TextMeshProUGUI exitText;
     public Image background;
     public Color startBgColor;
+    public Color goodEventColor;
+    public GameObject goodEventParticles;
+    public Sprite goodEventMarker;
+    public Color badEventColor;
+    public Sprite badEventMarker;
 
     public float spaceBetweenEvents;
     public float spaceBetweenText;
@@ -25,16 +30,22 @@ public class TimelineUI : MonoBehaviour
     public float jitterTime;
 
     private string[] events;
+    private bool[] eventOutcomes;
     private float nextXPos;
     private float yPos;
-    private float drawIter = 0.01f;
-    private int fadeIn = 100;
-    private int textMoveInY = 15;
+
     private RectTransform lineRT;
     private RectTransform p1SpriteRT;
     private RectTransform p2SpriteRT;
-
     private bool canExit = false;
+
+    private float drawIter = 0.01f;
+    private int fadeIn = 100;
+    private int textMoveInY = 15;
+    private float shakes = 10;
+    private float shakeSpeed = 0.1f;
+    private float pulseAmount = 1.2f;
+    private float pulseSpeed = 20;
 
     private IEnumerator ActivateExit()
     {
@@ -50,6 +61,91 @@ public class TimelineUI : MonoBehaviour
         canExit = true;
     }
 
+    private IEnumerator ChangeBackground(bool good, bool final)
+    {
+        // Find colors to deal with
+        Color tintWith = goodEventColor;
+        if(!good) {
+            tintWith = badEventColor;
+        }
+
+        Color ogColor = background.color;
+        Color newColor = new Color(tintWith.r * 0.3f + ogColor.r * 0.7f, tintWith.g * 0.3f + ogColor.g * 0.7f,
+                                    tintWith.b * 0.3f + ogColor.b * 0.7f, 1.0f);
+        if(final) {
+            newColor = new Color(tintWith.r, tintWith.g, tintWith.b, 1.0f);
+        }
+
+        // Transition colors
+        float colorF = 1.0f / (float)fadeIn;
+        for(int i = 0; i < fadeIn; i++) {
+            background.color = Color.Lerp(ogColor, newColor, colorF);
+            colorF += 1.0f / (float)fadeIn;
+
+            yield return new WaitForSeconds(drawIter);
+        }
+    }
+
+    private IEnumerator ShakeEventMarker(GameObject marker) {
+        RectTransform markerRT = marker.GetComponent<RectTransform>();
+        int ogPos = (int)markerRT.localPosition.x;
+        int numShakes = (int)Random.Range(shakes / 2, shakes);
+        int shakeAmt = (int)(shakeSpeed / drawIter);
+
+        // Shake!!!
+        float frac = 1.0f / (float)shakeAmt;
+        for(int j = 0; j < numShakes; j++) {
+            // Go back and forth
+            int shakeDist = (int)Mathf.Pow(-1.0f, j) * (int)Random.Range(0, shakes);
+            int curr = (int)markerRT.localPosition.x;
+            int newP = curr + shakeDist;
+
+            for(int i = 0; i < shakeAmt; i++) {
+                int lerp = (int)Mathf.Lerp(curr, newP, frac);
+                markerRT.localPosition = new Vector3(lerp, markerRT.localPosition.y, markerRT.localPosition.z);
+
+                frac += 1.0f / (float)shakeAmt;
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        // Reset position
+        int currPos = (int)markerRT.localPosition.x;
+        frac = 1.0f / (float)shakeAmt;
+        for(int k = 0; k < shakeAmt; k++) {
+                int lerp = (int)Mathf.Lerp(currPos, ogPos, frac);
+                markerRT.localPosition = new Vector3(lerp, markerRT.localPosition.y, markerRT.localPosition.z);
+
+                frac += 1.0f / (float)shakeAmt;
+                yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private IEnumerator PulseEventMarker(GameObject marker) {
+        RectTransform markerRT = marker.GetComponent<RectTransform>();
+
+        // Pulse out
+        float frac = 1.0f / (float)pulseSpeed;
+        for(int k = 0; k < pulseSpeed; k++) {
+                float lerp = Mathf.Lerp(1.0f, pulseAmount, frac);
+                markerRT.localScale = new Vector3(lerp, lerp, 1);
+                Debug.Log(markerRT.localScale.x);
+
+                frac += 1.0f / (float)pulseSpeed;
+                yield return new WaitForEndOfFrame();
+        }
+
+        // Pulse back in
+        frac =1.0f / (float)pulseSpeed;
+        for(int k = 0; k < pulseSpeed; k++) {
+                float lerp = Mathf.Lerp(pulseAmount, 1.0f, frac);
+                markerRT.localScale = new Vector3(lerp, lerp, 1);
+
+                frac += 1.0f / (float)pulseSpeed;
+                yield return new WaitForEndOfFrame();
+        }
+    }
+
     private IEnumerator PlayTimeline()
     {
         nextXPos = lineRenderer.GetComponent<RectTransform>().localPosition.x;
@@ -63,7 +159,6 @@ public class TimelineUI : MonoBehaviour
         float colorF = 1.0f / (float)fadeIn;
         for(int i = 0; i < fadeIn; i++) {
             background.color = Color.Lerp(ogColor, startBgColor, colorF);
-            Debug.Log(background.color);
             colorF += 1.0f / (float)fadeIn;
 
             yield return new WaitForSeconds(drawIter);
@@ -85,6 +180,15 @@ public class TimelineUI : MonoBehaviour
             RectTransform nEventMarkerRT = nEventMarker.GetComponent<RectTransform>();
             nEventMarkerRT.localPosition = new Vector3(nextXPos, yPos, 0);
             nEventMarkerRT.localScale = new Vector3(1, 1, 1);
+            if(eventOutcomes[i]) {
+                nEventMarker.GetComponent<Image>().sprite = goodEventMarker;
+                StartCoroutine(PulseEventMarker(nEventMarker));
+                GameObject particles = Instantiate(goodEventParticles);
+                particles.transform.position = new Vector3(nEventMarker.transform.position.x, nEventMarker.transform.position.y, 0.1f);
+            } else {
+                nEventMarker.GetComponent<Image>().sprite = badEventMarker;
+                StartCoroutine(ShakeEventMarker(nEventMarker));
+            }
 
             yield return new WaitForSeconds(renderEventTime);
 
@@ -98,6 +202,8 @@ public class TimelineUI : MonoBehaviour
             TextMeshProUGUI nTextBoxTMP = nTextBox.GetComponent<TextMeshProUGUI>();
             nTextBoxTMP.text = events[i];
             nTextBoxTMP.faceColor = new Color(nTextBoxTMP.faceColor.r, nTextBoxTMP.faceColor.g, nTextBoxTMP.faceColor.b, 0);
+
+            StartCoroutine(ChangeBackground(eventOutcomes[i], (i == events.Length - 1)));
 
             // Fade text in + bring it down
             for(int j = 0; j < fadeIn; j++) {
@@ -154,8 +260,9 @@ public class TimelineUI : MonoBehaviour
         }
     }
 
-    public void TimelineAnimation(string[] e) {
+    public void TimelineAnimation(string[] e, bool[] eOutcomes) {
         events = e;
+        eventOutcomes = eOutcomes;
         StartCoroutine(PlayTimeline());
     }
 }

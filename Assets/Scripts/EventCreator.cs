@@ -24,9 +24,10 @@ public class EventCreator : MonoBehaviour
     private string mediumBreakupFilename = "medium_breakup_flavor";
     private string badBreakupFilename = "bad_breakup_flavor";
 
-    private int dateIncre = 10;
+    private int dateIncre = 5;
     private float greatDateThreshold = 0.7f;
     private float badDateThreshold = 0.2f;
+    private float bias = 0.1f;
 
     private string[] datesText;
     private string[] badOutcomesText;
@@ -43,7 +44,6 @@ public class EventCreator : MonoBehaviour
         textB.Replace("*", p1Name);
         textB.Replace("^", p2Name);
         textB.Replace("!", dateNum.ToString());
-        Debug.Log(textB);
         return textB.ToString().Replace('\n', ' ');
     }
     
@@ -55,7 +55,6 @@ public class EventCreator : MonoBehaviour
         } else {
             outcome = goodOutcomesText[Mathf.Clamp((int)Random.Range(0, goodOutcomesText.Length), 0, goodOutcomesText.Length - 1)];
         }
-        Debug.Log(outcome);
 
         return GetDateDescriptor(dateNum) + " " + outcome;
     }
@@ -68,7 +67,6 @@ public class EventCreator : MonoBehaviour
         } else {
             outcome = badOutcomesText[Mathf.Clamp((int)Random.Range(0, badOutcomesText.Length), 0, badOutcomesText.Length - 1)];
         }
-        Debug.Log(outcome);
 
         return GetDateDescriptor(dateNum) + " " + outcome;
     }
@@ -114,25 +112,30 @@ public class EventCreator : MonoBehaviour
     {
         int endEvent = FindEndingEvent();
         List<string> events = new List<string>();
+        List<bool> eventOutcomes = new List<bool>();
         
         int dateNum = 1;
         // Generate 1st (0th) date special case
         if ((endEvent == 1 && compatability < marriageThreshold) || Random.Range(0.0f, 1.0f) > compatability) {
-            float dateSuccessChance = compatability + Random.Range(-1.0f * jitter, jitter);
+            float dateSuccessChance = compatability + Random.Range(-1.0f * jitter, jitter) + bias;
             events.Add(GetBadEvent(dateNum, dateSuccessChance));
+            eventOutcomes.Add(false);
         } else {
-            float dateSuccessChance = compatability + Random.Range(-1.0f * jitter, jitter);
+            float dateSuccessChance = compatability + Random.Range(-1.0f * jitter, jitter) + bias;
             events.Add(GetGoodEvent(dateNum, dateSuccessChance));
+            eventOutcomes.Add(true);
         }
         dateNum += (int) Random.Range(1, dateIncre);
 
         // Generate other dates
         for(int i = 1; i < endEvent - 2; i++) {
-            float dateSuccessChance = compatability + Random.Range(-1.0f * jitter, jitter);
+            float dateSuccessChance = compatability + Random.Range(-1.0f * jitter, jitter) + bias;
             if(Random.Range(0.0f, 1.0f) <= dateSuccessChance) {
                 events.Add(GetGoodEvent(dateNum, dateSuccessChance));
+                eventOutcomes.Add(true);
             } else {
                 events.Add(GetBadEvent(dateNum, dateSuccessChance));
+                eventOutcomes.Add(false);
             }
 
             dateNum += (int) Random.Range(1, dateIncre);
@@ -142,15 +145,19 @@ public class EventCreator : MonoBehaviour
         // and generate final outcome
         if(compatability >= marriageThreshold) {
             events.Add(GetGoodEvent(dateNum, 1));
+            eventOutcomes.Add(true);
             events.Add(p1Name + " and " + p2Name + " got married!");
+            eventOutcomes.Add(true);
         } else {
             if (endEvent != 1) {
                 events.Add(GetBadEvent(dateNum, 0));
+                eventOutcomes.Add(false);
             }
             events.Add(GetBreakupEvent());
+            eventOutcomes.Add(false);
         }
 
-        timeline.TimelineAnimation(events.ToArray());
+        timeline.TimelineAnimation(events.ToArray(), eventOutcomes.ToArray());
     }
 
     // Start is called before the first frame update
