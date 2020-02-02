@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ProfileCardManager : UnitySingleton<ProfileCardManager>
 {
+    [SerializeField] private TextMeshProUGUI CardCount = null;
     [SerializeField] private int SuitorProfilesCount = 5;
     [SerializeField] private ProfileCard DefaultProfileCard = null;
     [SerializeField] private RectTransform NewCardSpawnPoint = null;
@@ -31,9 +33,11 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         MatchmakingState.Instance.compatibility = storygenerator.GenerateCompatability(LockedProfile.character,  ProfileList[CurrentDisplayCard].character);
         MatchmakingState.Instance.name1 = LockedProfile.character.Name.Replace(((char)13).ToString(), "");
         MatchmakingState.Instance.name2 = ProfileList[CurrentDisplayCard].character.Name.Replace(((char)13).ToString(), "");
+        MatchmakingState.Instance.profile1 = LockedProfile.character.profile.PlayerIcon;
+        MatchmakingState.Instance.profile2 = ProfileList[CurrentDisplayCard].character.profile.PlayerIcon;
         //Have to called generate compatability before generateSharedPreferences
         MatchmakingState.Instance.sharedPreferences = storygenerator.generateSharedPreferences();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     // Start is called before the first frame update
@@ -43,6 +47,8 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
 
         LockedProfile = GenerateCard(LockedInPanel); 
         LockedProfile.SetStartPoint(new Vector2(0, 0));
+        LockedProfile.locked = true;
+        LockedProfile.active = true;
 
         ProfileList = new List<ProfileCard>();
 
@@ -52,24 +58,27 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         {
             if (i == matchingCardNum)
             {
+                print("reached with: " + i);
                 ProfileList.Add(GenerateCardSpecial(SpawnPanel));
             } else
             {
                 ProfileList.Add(GenerateCard(SpawnPanel));
             }
-            if(i>0)ProfileList[i].scrollbar.value = 0;
+            if(i>0)ProfileList[i].scrollbar.verticalNormalizedPosition = 0;
+            
         }
         
         ShowNextCard();
     }
 
-    public void OnCardPosChange(float dragDistance)
+    public void OnCardPosChange(float dragDistance, float mouseDistance)
     {
         if(dragDistance > 0 && !matched)
         {
             MatchHeart.GetComponent<RectTransform>().localScale = new Vector3(1,1,1) * dragDistance/100;
             MatchHeart.color = new Color (1,1,1, dragDistance / rightDragToMatch);
         }
+        ProfileList[CurrentDisplayCard].darken.enabled = (mouseDistance < -leftDragToDiscard) && ProfileList[CurrentDisplayCard].dragging;
     }
 
     public void OnCardFinishDragged(float dragDistance)
@@ -108,12 +117,12 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     {
         CurrentDisplayCard = (CurrentDisplayCard+1) % ProfileList.Count;
         ProfileList[CurrentDisplayCard].active = true;
-        ProfileList[CurrentDisplayCard].scrollbar.value = 1;
+        ProfileList[CurrentDisplayCard].scrollbar.verticalNormalizedPosition = 1;
         ProfileList[CurrentDisplayCard].GetComponent<RectTransform>().anchoredPosition = NewCardSpawnPoint.anchoredPosition;
         ProfileList[CurrentDisplayCard].SetStartPoint(new Vector2(0,0));
         ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].SetStartPoint(NewCardSpawnPoint.anchoredPosition);
-        ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].scrollbar.value = 0;
+        ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].scrollbar.verticalNormalizedPosition = 0;
     }
 
     private void Update()
@@ -121,6 +130,8 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         if(matched)
         {
             MatchHeart.GetComponent<RectTransform>().localScale = Vector3.Lerp(MatchHeart.GetComponent<RectTransform>().localScale, new Vector3(1,1,1) * 60,0.03f);
+           
         }
+         CardCount.text = (CurrentDisplayCard+1).ToString();
     }
 }

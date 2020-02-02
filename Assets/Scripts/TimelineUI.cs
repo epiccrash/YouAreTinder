@@ -12,10 +12,12 @@ public class TimelineUI : MonoBehaviour
     public GameObject eventMarker;
     public GameObject lineRenderer;
     public GameObject textBox;
-    public GameObject p1Sprite;
-    public GameObject p2Sprite;
+    public GameObject characters;
+    public Image p1Sprite;
+    public Image p2Sprite;
     public TextMeshProUGUI exitText;
     public Image background;
+    public GameObject fadeOut;
     public Color startBgColor;
     public Color goodEventColor;
     public GameObject goodEventParticles;
@@ -36,8 +38,7 @@ public class TimelineUI : MonoBehaviour
     private float yPos;
 
     private RectTransform lineRT;
-    private RectTransform p1SpriteRT;
-    private RectTransform p2SpriteRT;
+    private RectTransform charactersRT;
     private bool fastForward = false;
     private bool canExit = false;
 
@@ -51,17 +52,40 @@ public class TimelineUI : MonoBehaviour
 
     private IEnumerator ActivateExit()
     {
-        canExit = true;
+        GameState.Instance.currentPoints += 1;
+        if(GameState.Instance.currentPoints >= GameState.Instance.pointsToWin) {
 
-        // Fade text in + bring it down
-        for(int j = 0; j < fadeIn; j++) {
-            float frac = (float)j / (float)fadeIn;
-            float newAlpha = Mathf.Lerp(0, 1.0f, frac);
-            exitText.faceColor = new Color(exitText.faceColor.r, exitText.faceColor.g, exitText.faceColor.b, newAlpha);
+            // Set fade out so it renders over everything else
+            fadeOut.SetActive(true);
+            fadeOut.transform.SetSiblingIndex(this.transform.childCount - 1);
+            Image fadeOutImg = fadeOut.GetComponent<Image>();
             
-            yield return new WaitForSeconds(drawIter);
-        }
+            yield return new WaitForSeconds(pauseBetweenEvents / 2);
 
+            // Fade to pink
+            for(int j = 0; j < fadeIn; j++) {
+                float frac = (float)j / (float)fadeIn;
+                float newAlpha = Mathf.Lerp(0, 1.0f, frac);
+                fadeOutImg.color = new Color(fadeOutImg.color.r, fadeOutImg.color.g, fadeOutImg.color.b, newAlpha);
+                
+                yield return new WaitForSeconds(drawIter);
+            }
+
+            yield return new WaitForSeconds(pauseBetweenEvents);
+            SceneManager.LoadScene(3);
+        } else {
+            canExit = true;
+
+            // Fade text in + bring it down
+            for(int j = 0; j < fadeIn; j++) {
+                float frac = (float)j / (float)fadeIn;
+                float newAlpha = Mathf.Lerp(0, 1.0f, frac);
+                exitText.faceColor = new Color(exitText.faceColor.r, exitText.faceColor.g, exitText.faceColor.b, newAlpha);
+                
+                yield return new WaitForSeconds(drawIter);
+            }
+        }
+        
     }
 
     private IEnumerator ChangeBackground(bool good, bool final)
@@ -132,7 +156,7 @@ public class TimelineUI : MonoBehaviour
         for(int k = 0; k < pulseSpeed; k++) {
             float lerp = Mathf.Lerp(1.0f, pulseAmount, frac);
             markerRT.localScale = new Vector3(lerp, lerp, 1);
-            Debug.Log(markerRT.localScale.x);
+            // Debug.Log(markerRT.localScale.x);
 
             frac += 1.0f / (float)pulseSpeed;
             yield return new WaitForEndOfFrame();
@@ -154,9 +178,10 @@ public class TimelineUI : MonoBehaviour
     {
         nextXPos = lineRenderer.GetComponent<RectTransform>().localPosition.x;
         yPos = lineRenderer.GetComponent<RectTransform>().localPosition.y;
+        p1Sprite.sprite = MatchmakingState.Instance.profile1;
+        p2Sprite.sprite = MatchmakingState.Instance.profile2;
         lineRT = lineRenderer.GetComponent<RectTransform>();
-        p1SpriteRT = p1Sprite.GetComponent<RectTransform>();
-        p2SpriteRT = p2Sprite.GetComponent<RectTransform>();
+        charactersRT = characters.GetComponent<RectTransform>();
 
         // Fade background color in
         Color ogColor = background.color;
@@ -170,8 +195,7 @@ public class TimelineUI : MonoBehaviour
 
         yield return new WaitForSeconds(pauseBetweenEvents);
         
-        p1Sprite.SetActive(true);
-        p2Sprite.SetActive(true);
+        characters.SetActive(true);
         if(!fastForward) yield return new WaitForSeconds(pauseBetweenEvents);
         
         int lineIter = (int)(lineDrawTime / drawIter);
@@ -237,8 +261,7 @@ public class TimelineUI : MonoBehaviour
 
                     // Adjust position
                     lineRT.localPosition = new Vector3(lineRT.localPosition.x + lineXOffset, yPos, 0);
-                    p1SpriteRT.localPosition = new Vector3(p1SpriteRT.localPosition.x + spaceBetweenEvents / lineIter, p1SpriteRT.localPosition.y, 0);
-                    p2SpriteRT.localPosition = new Vector3(p2SpriteRT.localPosition.x + spaceBetweenEvents / lineIter, p2SpriteRT.localPosition.y, 0);
+                    charactersRT.localPosition = new Vector3(charactersRT.localPosition.x + spaceBetweenEvents / lineIter, charactersRT.localPosition.y, 0);
                     if(!fastForward) yield return new WaitForSeconds(drawIter);
                 }
             }
@@ -252,8 +275,8 @@ public class TimelineUI : MonoBehaviour
     {
         eventMarker.SetActive(false);
         textBox.SetActive(false);
-        p1Sprite.SetActive(false);
-        p2Sprite.SetActive(false);
+        characters.SetActive(false);
+        fadeOut.SetActive(false);
         exitText.faceColor = new Color(exitText.faceColor.r, exitText.faceColor.g, exitText.faceColor.b, 0);
     }
 
@@ -261,7 +284,7 @@ public class TimelineUI : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0)) {
             if(canExit) {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene(1);
             }
             fastForward = true;
         }

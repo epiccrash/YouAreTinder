@@ -43,9 +43,20 @@ public class StoryGenerator : MonoBehaviour
             if (c2Preferences.ContainsKey(k.Key))
             {
                 count += 1;
-                temp += Mathf.Abs(c2Preferences[k.Key] - k.Value)*0.3f;
+                // Now creates bias based on how much a person cares about something
+                if ((k.Value > 0.5f && c2Preferences[k.Key] > 0.5f) ||
+                    (k.Value < -0.5f && c2Preferences[k.Key] < -0.5f) ||
+                    (k.Value > 0.5f && c2Preferences[k.Key] < -0.5f) ||
+                    (k.Value < -0.5f && c2Preferences[k.Key] > 0.5f))
+                {
+                    temp += Mathf.Abs(c2Preferences[k.Key] - k.Value) * 0.3f;
+                } else if (k.Value == c2Preferences[k.Key]) {
+                    temp += 0.12f;
+                } else
+                {
+                    temp += Mathf.Abs(c2Preferences[k.Key] - k.Value) * 0.1f;
+                }
                 //0-2,the higher the abs value, the less compatable
-                Debug.Log(c2Preferences[k.Key]+" " + " "+ k.Value);
                 sharedPreferences.Add(k.Key);
             }
         }
@@ -61,7 +72,7 @@ public class StoryGenerator : MonoBehaviour
 
         result = Mathf.Clamp(result, -1, 1);
 
-    
+        print(result);
         return result;
     }
 }
