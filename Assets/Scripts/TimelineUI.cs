@@ -72,6 +72,7 @@ public class TimelineUI : MonoBehaviour
             }
 
             yield return new WaitForSeconds(pauseBetweenEvents);
+            GameState.Instance.currentPoints = 0;
             SceneManager.LoadScene(3);
         } else {
             canExit = true;
