@@ -52,9 +52,9 @@ public class EventCreator : MonoBehaviour
         string outcome = "";
 
         if(dateSuccessChance >= greatDateThreshold) {
-            outcome = greatOutcomesText[Mathf.Clamp((int)Random.Range(0, greatOutcomesText.Length), 0, greatOutcomesText.Length - 1)];
+            outcome = greatOutcomesText[Mathf.Clamp((int)Random.Range(0, greatOutcomesText.Length - 1), 0, greatOutcomesText.Length - 1)];
         } else {
-            outcome = goodOutcomesText[Mathf.Clamp((int)Random.Range(0, goodOutcomesText.Length), 0, goodOutcomesText.Length - 1)];
+            outcome = goodOutcomesText[Mathf.Clamp((int)Random.Range(0, goodOutcomesText.Length - 1), 0, goodOutcomesText.Length - 1)];
         }
 
         return GetDateDescriptor(dateNum) + " " + outcome;
