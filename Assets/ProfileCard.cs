@@ -24,7 +24,7 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
     public Texture2D unlockedMouseTex = null;
 
     RectTransform rect;
-    private bool dragging;
+    public bool dragging;
     private Vector2 dragPos;
     public Vector2 startPos;
     public Vector2 returnPos;

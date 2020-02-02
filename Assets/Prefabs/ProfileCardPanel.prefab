@@ -542,8 +542,8 @@ MonoBehaviour:
   outline: {fileID: 8846935693412574994}
   darken: {fileID: 5749983806979695149}
   locked: 0
-  lockedMouseTex: {fileID: 2800000, guid: 5d6b0ab8c74eb35478687b7a93642ddc, type: 3}
-  unlockedMouseTex: {fileID: 2800000, guid: 35b0f4e625f119444b1b8dc5fac32905, type: 3}
+  lockedMouseTex: {fileID: 2800000, guid: 2d56ee55da84c7b4a94256076b4ed7e6, type: 3}
+  unlockedMouseTex: {fileID: 2800000, guid: fb82be49c55117a47b07fcf8598015e8, type: 3}
   startPos: {x: 0, y: 0}
   returnPos: {x: 0, y: 0}
 --- !u!1 &7339946880867091384

@@ -78,7 +78,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
             MatchHeart.GetComponent<RectTransform>().localScale = new Vector3(1,1,1) * dragDistance/100;
             MatchHeart.color = new Color (1,1,1, dragDistance / rightDragToMatch);
         }
-        ProfileList[CurrentDisplayCard].darken.enabled = (mouseDistance < -leftDragToDiscard);
+        ProfileList[CurrentDisplayCard].darken.enabled = (mouseDistance < -leftDragToDiscard) && ProfileList[CurrentDisplayCard].dragging;
     }
 
     public void OnCardFinishDragged(float dragDistance)
