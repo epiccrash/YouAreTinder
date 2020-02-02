@@ -32,7 +32,7 @@ public class StoryGenerator : MonoBehaviour
     {
         c1Preferences = c1.Preferences;
         c2Preferences = c2.Preferences;
-
+        sharedPreferences = new List<string>();
         float result = Random.Range(6, 9)*0.1f;
         float temp = 0.0f;
         int count = 1;
