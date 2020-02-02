@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ProfileCardManager : UnitySingleton<ProfileCardManager>
 {
+    [SerializeField] private TextMeshProUGUI CardCount = null;
     [SerializeField] private int SuitorProfilesCount = 5;
     [SerializeField] private ProfileCard DefaultProfileCard = null;
     [SerializeField] private RectTransform NewCardSpawnPoint = null;
@@ -128,6 +130,8 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         if(matched)
         {
             MatchHeart.GetComponent<RectTransform>().localScale = Vector3.Lerp(MatchHeart.GetComponent<RectTransform>().localScale, new Vector3(1,1,1) * 60,0.03f);
+           
         }
+         CardCount.text = (CurrentDisplayCard+1).ToString();
     }
 }
