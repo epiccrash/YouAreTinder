@@ -99,4 +99,12 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
         dragging = true;
     }
 
+    public void SetFont(TMP_FontAsset f)
+    {
+        foreach(TextMeshProUGUI t in GetComponentsInChildren<TextMeshProUGUI>())
+        {
+            t.font = f;
+        }
+    }
+
 }
