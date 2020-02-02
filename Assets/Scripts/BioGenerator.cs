@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BioGenerator : MonoBehaviour
 {
-    //TODO:need to be init
-    Dictionary<string, List<List<string>>> database = new Dictionary<string, List<List<string>>>() {
+
+    public Dictionary<string, List<List<string>>> database = new Dictionary<string, List<List<string>>>() {
         { "cats", new List<List<string>> {
             new List<string> {
                 "My house is covered in cat hair and hairballs. Just the way I like it.",

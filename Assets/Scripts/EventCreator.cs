@@ -41,10 +41,21 @@ public class EventCreator : MonoBehaviour
     private string[] mediumBreakupText;
     private string[] badBreakupText;
 
-    private Dictionary<string, float> sharedPreferences;
+    private Dictionary<string, int> sharedPreferences;
+    private List<string> matchedPreferences;
+    private List<string> unMatchedPreferences;
 
-    private string GetDateDescriptor(int dateNum) {
-        string text = datesText[Mathf.Clamp((int)Random.Range(0, datesText.Length), 0, datesText.Length - 1)];
+    private string GetDateDescriptor(int dateNum = 0, string descp = null) {
+        string text;
+        if (descp == null)
+        {  
+            text = datesText[Mathf.Clamp((int)Random.Range(0, datesText.Length), 0, datesText.Length - 1)];
+        }
+        else
+        {
+            text = descp;
+        }
+
         StringBuilder textB = new StringBuilder(text);
         textB.Replace("*", p1Name);
         textB.Replace("^", p2Name);
@@ -60,8 +71,18 @@ public class EventCreator : MonoBehaviour
         } else {
             outcome = goodOutcomesText[Mathf.Clamp((int)Random.Range(0, goodOutcomesText.Length - 1), 0, goodOutcomesText.Length - 1)];
         }
+        if(matchedPreferences.Count != 0)
+        {
+            print(matchedPreferences[0]);
+            string result = PrefBasedEvents.Instance.PrefBasedEventsandOutcomes[matchedPreferences[0].Trim()][0][0];
+            matchedPreferences.RemoveAt(0);
+            return GetDateDescriptor(dateNum,result) + " " + outcome;
+        }
+        else
+        {
+            return GetDateDescriptor(dateNum) + " " + outcome;
+        }
 
-        return GetDateDescriptor(dateNum) + " " + outcome;
     }
 
     private string GetBadEvent(int dateNum, float dateSuccessChance) {
@@ -71,6 +92,14 @@ public class EventCreator : MonoBehaviour
             outcome = mehOutcomesText[Mathf.Clamp((int)Random.Range(0, mehOutcomesText.Length), 0, mehOutcomesText.Length - 1)];
         } else {
             outcome = badOutcomesText[Mathf.Clamp((int)Random.Range(0, badOutcomesText.Length), 0, badOutcomesText.Length - 1)];
+        }
+
+        if (unMatchedPreferences.Count != 0)
+        {
+            print(unMatchedPreferences[0]);
+            string result = PrefBasedEvents.Instance.PrefBasedEventsandOutcomes[unMatchedPreferences[0].Trim()][1][0];
+            unMatchedPreferences.RemoveAt(0);
+            return GetDateDescriptor(dateNum, result) + " " + outcome;
         }
 
         return GetDateDescriptor(dateNum) + " " + outcome;
@@ -178,6 +207,8 @@ public class EventCreator : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        matchedPreferences = new List<string>();
+        unMatchedPreferences = new List<string>();
         p1Name = MatchmakingState.Instance.name1;
         p2Name = MatchmakingState.Instance.name2;
         compatibility = MatchmakingState.Instance.compatibility;
@@ -194,7 +225,16 @@ public class EventCreator : MonoBehaviour
 
         compatibility = Mathf.Clamp(compatibility, 0.0f, 1.0f);
         maxNumEvents = Mathf.Clamp(maxNumEvents, 2, int.MaxValue);
-        
+        foreach(KeyValuePair<string, int> k in sharedPreferences)
+        {
+            if(k.Value == 1)
+            {
+                matchedPreferences.Add(k.Key);
+            } else if (k.Value == 0) {
+                unMatchedPreferences.Add(k.Key);
+            }
+        }
+
         GenerateDates();
     }
 }
