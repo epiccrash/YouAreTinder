@@ -96,7 +96,6 @@ public class CharacterGenerator : MonoBehaviour
             while (prefsDict.ContainsKey(pref))
             { 
                 pref = prefsList[Random.Range(0, prefsList.Length)];
-
             }
             float severity = Random.Range(1, 11) * 0.1f;
             if (isTarget)
@@ -137,10 +136,8 @@ public class CharacterGenerator : MonoBehaviour
         character.GetComponent<CharacterScript>().HeightInInches = height;
         character.GetComponent<CharacterScript>().Preferences = prefsDict;
         character.GetComponent<CharacterScript>().PrintVariables();
-        //character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict);
-        //TODO: comment me out when bioGenerator.cs is init by Joey! 
-        //                                      --- The last words of Sebastian before he left
-
+        character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict);
+        
         return character.GetComponent<CharacterScript>();
     }
 }
