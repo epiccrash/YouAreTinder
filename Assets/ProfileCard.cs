@@ -11,6 +11,7 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
     public TextMeshProUGUI CardName = null;
     public TextMeshProUGUI CardDescription = null;
     public bool active = false;
+    public Scrollbar scrollbar = null;
 
     RectTransform rect;
     private bool dragging;

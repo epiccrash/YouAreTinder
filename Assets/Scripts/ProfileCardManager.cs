@@ -8,6 +8,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     [SerializeField] private int SuitorProfilesCount = 5;
     [SerializeField] private ProfileCard DefaultProfileCard = null;
     [SerializeField] private RectTransform NewCardSpawnPoint = null;
+    [SerializeField] private RectTransform NewCardWaitPoint = null;
     [SerializeField] private RectTransform NewCardTargetPoint = null;
     [SerializeField] private RectTransform SpawnPanel = null;
     [SerializeField] private RectTransform LockedInPanel = null;
@@ -31,15 +32,18 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     // Start is called before the first frame update
     void Start()
     {
-        CurrentDisplayCard = SuitorProfilesCount;
+        CurrentDisplayCard = SuitorProfilesCount-1;
 
-        LockedProfile = GenerateCard(LockedInPanel);
+
+        LockedProfile = GenerateCard(LockedInPanel); 
         LockedProfile.SetStartPoint(new Vector2(0, 0));
+
 
         ProfileList = new List<ProfileCard>();
         for(int i = 0; i < SuitorProfilesCount; i++)
         {
             ProfileList.Add(GenerateCard(SpawnPanel));
+            if(i>0)ProfileList[i].scrollbar.value = 0;
         }
         
         ShowNextCard();
@@ -71,8 +75,8 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     ProfileCard GenerateCard(Transform Parent)
     {
         ProfileCard card = Instantiate(DefaultProfileCard, Vector3.zero, Quaternion.identity, Parent);
-        card.GetComponent<RectTransform>().anchoredPosition = NewCardSpawnPoint.anchoredPosition;
-        card.SetStartPoint(NewCardSpawnPoint.anchoredPosition);
+        card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
+        card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
         card.InitializeCard(generator.Generate());
         return card;
     }
@@ -81,8 +85,12 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     {
         CurrentDisplayCard = (CurrentDisplayCard+1) % ProfileList.Count;
         ProfileList[CurrentDisplayCard].active = true;
+        ProfileList[CurrentDisplayCard].scrollbar.value = 1;
         ProfileList[CurrentDisplayCard].GetComponent<RectTransform>().anchoredPosition = NewCardSpawnPoint.anchoredPosition;
         ProfileList[CurrentDisplayCard].SetStartPoint(new Vector2(0,0));
+        ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
+        ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].SetStartPoint(NewCardSpawnPoint.anchoredPosition);
+        ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].scrollbar.value = 0;
     }
 
     private void Update()
