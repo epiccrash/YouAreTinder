@@ -25,7 +25,7 @@ public class PrefBasedEvents : UnitySingletonPersistent<PrefBasedEvents>
         },
         { "star_wars", new List<List<string>> {
             new List<string> {
-                "* and ^ watched: Empire Strikes Back. They ate a lot of piazza. They had sex." },
+                "* and ^ watched: Empire Strikes Back. They Netflixed... and chilled." },
             new List<string> {
                 "* and ^ watched: Empire Strikes Back. One of them fell asleep." }
             }
@@ -41,7 +41,7 @@ public class PrefBasedEvents : UnitySingletonPersistent<PrefBasedEvents>
             new List<string> {
                 "* and ^ joined a environmental protection march for their #! date.", },
             new List<string> {
-                "* and ^ joined a environmental protection march for their #! date" }
+                "* and ^ joined a environmental protection march for their #! date." }
             }
         },
         { "politics", new List<List<string>> {
@@ -53,9 +53,9 @@ public class PrefBasedEvents : UnitySingletonPersistent<PrefBasedEvents>
         },
         { "working", new List<List<string>> {
             new List<string> {
-                "* and ^ watched came up with a business plan on their #! date. They received $1 million dollar in investment funds next day.", },
+                "* and ^ watched came up with a business plan on their #! date. They received $1 million dollars in investment funds next day.", },
             new List<string> {
-                "* and ^ had their #! date in a office building becuase one of them refuse to stop working." }
+                "* and ^ had their #! date in a office building becuase one of them refused to stop working." }
             }
         },
         { "pineapples_on_pizza", new List<List<string>> {
@@ -69,7 +69,7 @@ public class PrefBasedEvents : UnitySingletonPersistent<PrefBasedEvents>
             new List<string> {
                 "* and ^ travelled to a neighboring city for their #! date." },
             new List<string> {
-                "* and ^ discuss future travelling plan on their #! date. One of them wanted to go to the Artic. The other one wanted to watch Netflex." }
+                "* and ^ discuss future travelling plan on their #! date. One of them wanted to go to the Arctic. The other one wanted to watch Netflix." }
             }
         },
         { "video_games", new List<List<string>> {
@@ -88,7 +88,7 @@ public class PrefBasedEvents : UnitySingletonPersistent<PrefBasedEvents>
         },
         { "long_term", new List<List<string>> {
             new List<string> {
-                "* and ^ talked about their future plan on their #! date. They both mentiond each other in their plan." },
+                "* and ^ talked about their future plan on their #! date. They both mentioned each other in their plan." },
             new List<string> {
                 "* and ^ talked about their future plan on their #! date.", }
             }
@@ -124,9 +124,9 @@ public class PrefBasedEvents : UnitySingletonPersistent<PrefBasedEvents>
         },
         { "sports", new List<List<string>> {
             new List<string> {
-                 "* and ^ watched Super Ball for their #! date.", },
+                 "* and ^ watched the Super Bowl for their #! date.", },
             new List<string> {
-                 "* and ^ watched Super Ball for their #! date. Sadly, one of them didn't know the rules of football.", }
+                 "* and ^ watched the Super Bowl for their #! date. Sadly, one of them didn't know the rules of football.", }
             }
         },
         { "rich", new List<List<string>> {
@@ -140,14 +140,14 @@ public class PrefBasedEvents : UnitySingletonPersistent<PrefBasedEvents>
             new List<string> {
                 "* and ^ smoked weed on their #! date.", },
             new List<string> {
-                "* and ^ smoked weed on their #! date. Both of them are arrested.", }
+                "* and ^ smoked weed on their #! date. Both of them were arrested.", }
             }
         },
         { "anime", new List<List<string>> {
             new List<string> {
                 "* and ^  watched anime together for their #! date.", },
             new List<string> {
-                 "* and ^  watched anime together for their #! date. One of them feel uncomfortable.", }
+                 "* and ^  watched anime together for their #! date. One of them felt uncomfortable.", }
             }
         }
     };
