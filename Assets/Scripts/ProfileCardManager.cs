@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class ProfileCardManager : UnitySingleton<ProfileCardManager>
 {
@@ -21,6 +22,8 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     [SerializeField] private float rightDragToMatch = 0;
     [SerializeField] private CharacterGenerator chargenerator = null;
     [SerializeField] private StoryGenerator storygenerator = null;
+    [SerializeField]
+    private List<TMPro.TMP_FontAsset> fontAssets;
     private List<ProfileCard> ProfileList = null;
     private ProfileCard LockedProfile = null;
     private ProfileCard Match = null;
@@ -98,6 +101,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     ProfileCard GenerateCard(Transform Parent)
     {
         ProfileCard card = Instantiate(DefaultProfileCard, Vector3.zero, Quaternion.identity, Parent);
+        card.SetFont(fontAssets[Random.Range(0, fontAssets.Count)]);
         card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
         card.InitializeCard(chargenerator.Generate(null));
@@ -107,6 +111,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     ProfileCard GenerateCardSpecial(Transform Parent)
     {
         ProfileCard card = Instantiate(DefaultProfileCard, Vector3.zero, Quaternion.identity, Parent);
+        card.SetFont(fontAssets[Random.Range(0, fontAssets.Count)]);
         card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
         card.InitializeCard(chargenerator.Generate(LockedProfile.character));
