@@ -44,10 +44,10 @@ public class CharacterGenerator : MonoBehaviour
         prefsList = prefs.text.Split(","[0]);
 
         male_names = (TextAsset) Resources.Load(humanMaleNames);
-        male_names_list = male_names.text.Split(","[0]);
+        male_names_list = male_names.text.Replace("\n","").Split(","[0]);
 
         female_names = (TextAsset) Resources.Load(humanFemaleNames);
-        female_names_list = female_names.text.Split(","[0]);
+        female_names_list = female_names.text.Replace("\n","").Split(","[0]);
     }
 
     private void Start()

@@ -10,7 +10,6 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
     public Image CardPortrait = null;
     public TextMeshProUGUI CardName = null;
     public TextMeshProUGUI CardDescription = null;
-    public TextMeshProUGUI CardAge = null;
     public bool active = false;
 
     RectTransform rect;
@@ -27,8 +26,7 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
 
     public void InitializeCard(CharacterScript script)
     {
-        CardName.text = script.Name;
-        CardAge.text = script.Age.ToString();
+        CardName.text = script.Name +" \\ " + script.Age.ToString();
         CardDescription.text = "";
         foreach (KeyValuePair<string, float> k in script.Preferences)
         {
