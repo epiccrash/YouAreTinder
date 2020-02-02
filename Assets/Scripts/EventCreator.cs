@@ -26,8 +26,8 @@ public class EventCreator : MonoBehaviour
     private string badBreakupFilename = "bad_breakup_flavor";
 
     private int dateIncre = 5;
-    private float greatDateThreshold = 0.6f;
-    private float badDateThreshold = 0.2f;
+    private float greatDateThreshold = 0.55f;
+    private float badDateThreshold = 0.25f;
     private float bias = 0.1f;
 
     private string[] datesText;

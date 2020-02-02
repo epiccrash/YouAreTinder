@@ -885,7 +885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxNumEvents: 5
-  marriageThreshold: 0.6
+  marriageThreshold: 0.65
   jitter: 0.05
   timeline: {fileID: 1835752636}
 --- !u!1 &1857967392
