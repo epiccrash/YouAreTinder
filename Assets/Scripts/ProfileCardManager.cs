@@ -41,6 +41,8 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
 
         LockedProfile = GenerateCard(LockedInPanel); 
         LockedProfile.SetStartPoint(new Vector2(0, 0));
+        LockedProfile.locked = true;
+        LockedProfile.active = true;
 
         ProfileList = new List<ProfileCard>();
 
@@ -55,19 +57,21 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
             {
                 ProfileList.Add(GenerateCard(SpawnPanel));
             }
-            if(i>0)ProfileList[i].scrollbar.value = 0;
+            if(i>0)ProfileList[i].scrollbar.verticalNormalizedPosition = 0;
+            
         }
         
         ShowNextCard();
     }
 
-    public void OnCardPosChange(float dragDistance)
+    public void OnCardPosChange(float dragDistance, float mouseDistance)
     {
         if(dragDistance > 0 && !matched)
         {
             MatchHeart.GetComponent<RectTransform>().localScale = new Vector3(1,1,1) * dragDistance/100;
             MatchHeart.color = new Color (1,1,1, dragDistance / rightDragToMatch);
         }
+        ProfileList[CurrentDisplayCard].darken.enabled = (mouseDistance < -leftDragToDiscard);
     }
 
     public void OnCardFinishDragged(float dragDistance)
@@ -106,12 +110,12 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     {
         CurrentDisplayCard = (CurrentDisplayCard+1) % ProfileList.Count;
         ProfileList[CurrentDisplayCard].active = true;
-        ProfileList[CurrentDisplayCard].scrollbar.value = 1;
+        ProfileList[CurrentDisplayCard].scrollbar.verticalNormalizedPosition = 1;
         ProfileList[CurrentDisplayCard].GetComponent<RectTransform>().anchoredPosition = NewCardSpawnPoint.anchoredPosition;
         ProfileList[CurrentDisplayCard].SetStartPoint(new Vector2(0,0));
         ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].SetStartPoint(NewCardSpawnPoint.anchoredPosition);
-        ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].scrollbar.value = 0;
+        ProfileList[(CurrentDisplayCard+1) % ProfileList.Count].scrollbar.verticalNormalizedPosition = 0;
     }
 
     private void Update()

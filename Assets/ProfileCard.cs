@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandler
+public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Image CardPortrait = null;
     public TextMeshProUGUI CardName = null;
@@ -13,8 +14,14 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
     public Image[] CardDarkBackings;
     public Image[] CardLightBackings;
     public bool active = false;
-    public Scrollbar scrollbar = null;
+    public ScrollRect scrollbar = null;
     public CharacterScript character = null;
+    public Image outline = null;
+    public Image darken = null;
+    bool mousein = false;
+    public bool locked = false;
+    public Texture2D lockedMouseTex = null;
+    public Texture2D unlockedMouseTex = null;
 
     RectTransform rect;
     private bool dragging;
@@ -32,6 +39,7 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
     {
         Color proxy = script.profile.LightColor;
 
+        outline.enabled = false;
         character = script;
         CardName.text = script.Name +" \\ " + script.Age.ToString();
         proxy.a = 1;
@@ -66,7 +74,7 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
 
     public void Update()
     { 
-        if (dragging && active)
+        if (dragging && !locked)
         {
             if (Input.GetMouseButton(0))
             {
@@ -77,17 +85,35 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
                 ProfileCardManager.Instance.OnCardFinishDragged(Input.mousePosition.x - startMousePos.x);
                 dragging = false;
             }
+            
         }
         else
         {
-            dragging = false;
+            if(locked && !Input.GetMouseButton(0))
+            {
+                dragging = false;
+            }
             rect.anchoredPosition = Vector2.Lerp(rect.anchoredPosition, returnPos, 0.1f);
         }
 
         if (active)
         {
-            ProfileCardManager.Instance.OnCardPosChange(rect.anchoredPosition.x - startPos.x);
+            ProfileCardManager.Instance.OnCardPosChange(rect.anchoredPosition.x - startPos.x, Input.mousePosition.x - startMousePos.x);
+            outline.enabled = mousein || dragging;
+            outline.GetComponent<RectTransform>().localScale = new Vector3(1,1,1) * (dragging ? 1.01f : 1);
+            GetComponent<RectTransform>().localScale = new Vector3(1,1,1) * (dragging ? 0.97f : 1);
         }
+
+        if(active && dragging)
+        {
+            Cursor.SetCursor(locked ? lockedMouseTex : unlockedMouseTex, new Vector2(), CursorMode.Auto);
+        }
+
+        if(!Input.GetMouseButton(0))
+        {
+            Cursor.SetCursor(null, new Vector2(), CursorMode.Auto);
+        }
+
         rect.rotation = Quaternion.Euler(0, 0, -(rect.anchoredPosition.x - startPos.x) / 250);
     }
 
@@ -98,4 +124,13 @@ public class ProfileCard : MonoBehaviour, IEventSystemHandler, IPointerDownHandl
         dragging = true;
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        mousein = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        mousein = false;
+    }
 }
