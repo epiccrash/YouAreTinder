@@ -52,6 +52,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         {
             if (i == matchingCardNum)
             {
+                print("reached with: " + i);
                 ProfileList.Add(GenerateCardSpecial(SpawnPanel));
             } else
             {

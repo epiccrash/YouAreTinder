@@ -132,7 +132,7 @@ public class TimelineUI : MonoBehaviour
         for(int k = 0; k < pulseSpeed; k++) {
             float lerp = Mathf.Lerp(1.0f, pulseAmount, frac);
             markerRT.localScale = new Vector3(lerp, lerp, 1);
-            Debug.Log(markerRT.localScale.x);
+            // Debug.Log(markerRT.localScale.x);
 
             frac += 1.0f / (float)pulseSpeed;
             yield return new WaitForEndOfFrame();
