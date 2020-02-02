@@ -52,7 +52,7 @@ public class TimelineUI : MonoBehaviour
 
     private IEnumerator ActivateExit()
     {
-        GameState.Instance.currentPoints += 1;
+        if(eventOutcomes[eventOutcomes.Length - 1]) GameState.Instance.currentPoints += 1;
         if(GameState.Instance.currentPoints >= GameState.Instance.pointsToWin) {
 
             // Set fade out so it renders over everything else

@@ -8,9 +8,9 @@ public class StoryGenerator : MonoBehaviour
     private Dictionary<string, float> c1Preferences;
     private Dictionary<string, float> c2Preferences;
     private List<string> sharedPreferences;
-    public Dictionary<string, float> generateSharedPreferences()
+    public Dictionary<string, int> generateSharedPreferences()
     {
-        Dictionary<string, float> result = new Dictionary<string, float>();
+        Dictionary<string, int> result = new Dictionary<string, int>();
         //Have to called generate compatability before generateSharedPreferences
         foreach (string s in sharedPreferences)
         {
