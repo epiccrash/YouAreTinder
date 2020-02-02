@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ProfileCardManager : UnitySingleton<ProfileCardManager>
@@ -16,7 +17,8 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     [SerializeField] private float leftDragToDiscard = 0;
     [SerializeField] private float discardOffset = 0;
     [SerializeField] private float rightDragToMatch = 0;
-    [SerializeField] private CharacterGenerator generator = null;
+    [SerializeField] private CharacterGenerator chargenerator = null;
+    [SerializeField] private StoryGenerator storygenerator = null;
     private List<ProfileCard> ProfileList = null;
     private ProfileCard LockedProfile = null;
     private int CurrentDisplayCard;
@@ -25,8 +27,10 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     IEnumerator OnFinishMatch()
     {
         yield return new WaitForSeconds(1.0f);
-        // HANDLE UPDATING PERSISTENT SINGLETON AND MATCHING HERE
-        Debug.Log("haha now change");
+        MatchmakingState.Instance.compatibility = storygenerator.GenerateCompatability(LockedProfile.character,  ProfileList[CurrentDisplayCard].character);
+         MatchmakingState.Instance.name1 = LockedProfile.name;
+        MatchmakingState.Instance.name2 = ProfileList[CurrentDisplayCard].name;
+        SceneManager.LoadScene(1);
     }
 
     // Start is called before the first frame update
@@ -77,7 +81,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         ProfileCard card = Instantiate(DefaultProfileCard, Vector3.zero, Quaternion.identity, Parent);
         card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
-        card.InitializeCard(generator.Generate());
+        card.InitializeCard(chargenerator.Generate());
         return card;
     }
 

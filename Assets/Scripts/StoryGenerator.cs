@@ -4,23 +4,15 @@ using UnityEngine;
 
 public class StoryGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject character1;
-    [SerializeField]
-    private GameObject character2;
 
     private Dictionary<string, float> c1Preferences;
     private Dictionary<string, float> c2Preferences;
 
-    private void init()
+    public float GenerateCompatability(CharacterScript c1, CharacterScript c2)
     {
-        c1Preferences = character1.GetComponent<CharacterScript>().Preferences;
-        c2Preferences = character2.GetComponent<CharacterScript>().Preferences;
-    }
+        c1Preferences = c1.Preferences;
+        c2Preferences = c2.Preferences;
 
-    public float GenerateCompatability()
-    {
-        init();
         float result = Random.Range(6, 9)*0.1f;
         float temp = 0.0f;
         int count = 1;
@@ -40,21 +32,5 @@ public class StoryGenerator : MonoBehaviour
         result -= temp / count;
         Debug.Log(result);
         return result;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("s"))
-        {
-            GenerateCompatability();
-        }
     }
 }
