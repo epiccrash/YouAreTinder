@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07428007f9fa6ae4d8e47356f1386ac8, type: 3}
-  m_Name: B6
+  m_Name: G7
   m_EditorClassIdentifier: 
-  PlayerIcon: {fileID: 21300000, guid: 90de3f8853010954abc65e1b26d175c3, type: 3}
-  DarkColor: {r: 0.38823533, g: 0.10196079, b: 0.12941177, a: 0}
-  LightColor: {r: 1, g: 0.68235296, b: 0.043137256, a: 0}
-  IsMale: 1
+  PlayerIcon: {fileID: 21300000, guid: 3a0b760be78784c2eb42e1834feca335, type: 3}
+  DarkColor: {r: 0.22249912, g: 0.3773585, b: 0.2439931, a: 0}
+  LightColor: {r: 0.91501516, g: 0.7609469, b: 0.9433962, a: 1}
+  IsMale: 0
