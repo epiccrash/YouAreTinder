@@ -25,6 +25,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     [SerializeField] private StoryGenerator storygenerator = null;
     [SerializeField]
     private List<TMPro.TMP_FontAsset> fontAssets;
+    private HashSet<TMPro.TMP_FontAsset> fontOptions;
     private List<ProfileCard> ProfileList = null;
     private ProfileCard LockedProfile = null;
     private ProfileCard Match = null;
@@ -43,6 +44,11 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         MatchmakingState.Instance.sharedPreferences = storygenerator.generateSharedPreferences();
         SceneManager.LoadScene(2);
         chargenerator.ResetProfilesSoFar();
+    }
+
+    private void Awake()
+    {
+        fontOptions = new HashSet<TMP_FontAsset>(fontAssets);
     }
 
     // Start is called before the first frame update
@@ -103,7 +109,11 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     ProfileCard GenerateCard(Transform Parent)
     {
         ProfileCard card = Instantiate(DefaultProfileCard, Vector3.zero, Quaternion.identity, Parent);
-        card.SetFont(fontAssets[Random.Range(0, fontAssets.Count)]);
+        TMP_FontAsset[] fontOptionsArray = fontOptions.ToArray<TMP_FontAsset>();
+        TMP_FontAsset cardFont = fontOptionsArray[Random.Range(0, fontOptions.Count)];
+        card.SetFont(cardFont);
+        fontOptions.Remove(cardFont);
+
         card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
         card.InitializeCard(chargenerator.Generate(null, Random.Range(0, 3)));
@@ -113,7 +123,11 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
     ProfileCard GenerateCardSpecial(Transform Parent)
     {
         ProfileCard card = Instantiate(DefaultProfileCard, Vector3.zero, Quaternion.identity, Parent);
-        card.SetFont(fontAssets[Random.Range(0, fontAssets.Count)]);
+        TMP_FontAsset[] fontOptionsArray = fontOptions.ToArray<TMP_FontAsset>();
+        TMP_FontAsset cardFont = fontOptionsArray[Random.Range(0, fontOptions.Count)];
+        card.SetFont(cardFont);
+        fontOptions.Remove(cardFont);
+
         card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
 

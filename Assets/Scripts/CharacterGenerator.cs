@@ -69,8 +69,6 @@ public class CharacterGenerator : MonoBehaviour
 
     public CharacterScript Generate(CharacterScript c, int matchStyleInt)
     {
-        print(ProfileTracker.S);
-
         if (ProfileTracker.S.RemainingProfiles.Count == 0)
         {
             ProfileTracker.S.RemainingProfiles = new HashSet<ProfilePictureData>(all_profiles);
