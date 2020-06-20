@@ -73,6 +73,11 @@ public class StoryGenerator : MonoBehaviour
         result = Mathf.Clamp(result, 0, 1);
 
         print(result);
+
+        if (c2.Match)
+        {
+            return Mathf.Max(result, 0.75f);
+        }
         return result;
     }
 }

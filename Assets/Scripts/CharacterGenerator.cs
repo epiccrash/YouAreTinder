@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharacterGenerator : MonoBehaviour
@@ -21,6 +22,7 @@ public class CharacterGenerator : MonoBehaviour
     private int max_height_in_inches;
 
     public ProfilePictureData[] all_profiles;
+    private HashSet<ProfilePictureData> profiles_so_far;
 
     private TextAsset prefs;
     private string[] prefsList;
@@ -50,6 +52,8 @@ public class CharacterGenerator : MonoBehaviour
 
         female_names = (TextAsset) Resources.Load(humanFemaleNames);
         female_names_list = female_names.text.Replace("\n","").Split(","[0]);
+
+        ResetProfilesSoFar();
     }
 
     private void Start()
@@ -63,9 +67,21 @@ public class CharacterGenerator : MonoBehaviour
         isTarget = true;
     }
 
-    public CharacterScript Generate(CharacterScript c)
+    public CharacterScript Generate(CharacterScript c, int matchStyleInt)
     {
-        ProfilePictureData prof = all_profiles[Random.Range(0,all_profiles.Length)];
+        print(ProfileTracker.S);
+
+        if (ProfileTracker.S.RemainingProfiles.Count == 0)
+        {
+            ProfileTracker.S.RemainingProfiles = new HashSet<ProfilePictureData>(all_profiles);
+            ProfileTracker.S.RemainingProfiles.ExceptWith(profiles_so_far);
+        }
+
+        ProfilePictureData[] remaining_profiles_array = ProfileTracker.S.RemainingProfiles.ToArray<ProfilePictureData>();
+        ProfilePictureData prof = remaining_profiles_array[Random.Range(0, remaining_profiles_array.Length)];
+        ProfileTracker.S.RemainingProfiles.Remove(prof);
+        profiles_so_far.Add(prof);
+
         int count = 0;//The number of common preference with the target
         string[] nameList = prof.IsMale ? male_names_list : female_names_list;
         string name = nameList[Random.Range(0, nameList.Length)];
@@ -149,26 +165,25 @@ public class CharacterGenerator : MonoBehaviour
             prefsDict.Add(pref, severity);
         }
 
-        int styleInt = Random.Range(0, 3);
-
         GameObject character = Instantiate(characterTemplate);
         character.GetComponent<CharacterScript>().Name = name;
         character.GetComponent<CharacterScript>().Age = age;
         character.GetComponent<CharacterScript>().HeightInInches = height;
         character.GetComponent<CharacterScript>().Preferences = prefsDict;
-        character.GetComponent<CharacterScript>().StyleInt = styleInt;
+        character.GetComponent<CharacterScript>().StyleInt = matchStyleInt;
         if (c != null)
         {
             character.GetComponent<CharacterScript>().Age = (age >= c.Age - 5 && age <= c.Age + 5) ? age : Mathf.Clamp(c.Age + Random.Range(-5, 6), min_age, max_age);
-            while (character.GetComponent<CharacterScript>().StyleInt == c.StyleInt)
-            {
-                character.GetComponent<CharacterScript>().StyleInt = Random.Range(0, 3);
-            }
             character.GetComponent<CharacterScript>().Match = true;
         }
-        character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict, styleInt);
+        character.GetComponent<CharacterScript>().bio = bioGenerator.GenerateBio(prefsDict, matchStyleInt);
         character.GetComponent<CharacterScript>().profile = prof;
         
         return character.GetComponent<CharacterScript>();
+    }
+
+    public void ResetProfilesSoFar()
+    {
+        profiles_so_far = new HashSet<ProfilePictureData>();
     }
 }

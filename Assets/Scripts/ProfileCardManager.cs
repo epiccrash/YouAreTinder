@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class ProfileCardManager : UnitySingleton<ProfileCardManager>
 {
@@ -41,6 +42,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         //Have to called generate compatability before generateSharedPreferences
         MatchmakingState.Instance.sharedPreferences = storygenerator.generateSharedPreferences();
         SceneManager.LoadScene(2);
+        chargenerator.ResetProfilesSoFar();
     }
 
     // Start is called before the first frame update
@@ -104,7 +106,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         card.SetFont(fontAssets[Random.Range(0, fontAssets.Count)]);
         card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
-        card.InitializeCard(chargenerator.Generate(null));
+        card.InitializeCard(chargenerator.Generate(null, Random.Range(0, 3)));
         return card;
     }
 
@@ -114,7 +116,14 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
         card.SetFont(fontAssets[Random.Range(0, fontAssets.Count)]);
         card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
-        card.InitializeCard(chargenerator.Generate(LockedProfile.character));
+
+        HashSet<int> styleOptions = new HashSet<int>() { 0, 1, 2 };
+        CharacterScript c = LockedProfile.character;
+        styleOptions.Remove(c.StyleInt);
+        int[] styleArray = styleOptions.ToArray<int>();
+        int matchStyleInt = styleArray[Random.Range(0, 2)];
+
+        card.InitializeCard(chargenerator.Generate(LockedProfile.character, matchStyleInt));
         return card;
     }
 
