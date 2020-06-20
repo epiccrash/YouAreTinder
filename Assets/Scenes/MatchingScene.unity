@@ -245,6 +245,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 73965118e69d34d51aa2ad047b2b643a, type: 2}
   - {fileID: 11400000, guid: a28c10c2f628f4f1ea9ef1cc4a918c4e, type: 2}
   - {fileID: 11400000, guid: 656762180b22e4a82bf381399f5122ee, type: 2}
+  - {fileID: 11400000, guid: 780f9feff041a47adac80d22a1472f27, type: 2}
+  - {fileID: 11400000, guid: 914edd67dad2844e6931370fd03e4f46, type: 2}
   characterTemplate: {fileID: 5401794044344017507, guid: dff327373803d3b47981bbd03c19aa3a,
     type: 3}
 --- !u!4 &117617556
