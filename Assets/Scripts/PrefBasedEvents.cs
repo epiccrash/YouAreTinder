@@ -10,7 +10,7 @@ public class PrefBasedEvents : UnitySingletonPersistent<PrefBasedEvents>
         //index 1: one like one dislike, bad outcome 
         { "cats", new List<List<string>> {
             new List<string> {
-                "* and ^ had their #! date at a cat cafe. They pet a lot of cats!!",
+                "* and ^ had their #! date at a cat cafe. They had a great time petting lots of cats.",
                  },
             new List<string> {
                 "* and ^ had their #! date at a cat cafe. A cat bit both of them. They were not happy.",
