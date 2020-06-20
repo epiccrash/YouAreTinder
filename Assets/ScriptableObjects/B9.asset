@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: B9
   m_EditorClassIdentifier: 
   PlayerIcon: {fileID: 21300000, guid: ac027190033054ddb86b9f582b0dbcae, type: 3}
-  DarkColor: {r: 0.4762816, g: 0.7264151, b: 0.49397445, a: 0}
-  LightColor: {r: 0.122641504, g: 0.118592024, b: 0.118592024, a: 0}
+  DarkColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 0}
+  LightColor: {r: 0.51023495, g: 0.735849, b: 0.53812903, a: 0}
   IsMale: 1
