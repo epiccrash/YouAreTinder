@@ -83,7 +83,7 @@ public class PrefBasedEvents : UnitySingletonPersistent<PrefBasedEvents>
             new List<string> {
                 "* and ^ realize they both wanted to have kids on their #! date." },
             new List<string> {
-                "* and ^ ran in to a naughty boy on their #! date. He dropped a bucket of water on them.", }
+                "* and ^ talked about children on their #! date. They argued the entire time about whether children are demons or angels.", }
             }
         },
         { "long_term", new List<List<string>> {
