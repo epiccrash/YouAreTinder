@@ -30,7 +30,7 @@ public class EventCreator : MonoBehaviour
     private string breakupImmediateFilename = "breakup_immediate_flavor";
 
     private int dateIncreMax = 7;
-    private float greatDateThreshold = 0.55f;
+    private float greatDateThreshold = 0.65f;
     private float badDateThreshold = 0.25f;
     private float bias = 0.1f;
 
@@ -170,12 +170,12 @@ public class EventCreator : MonoBehaviour
         return i;
     }
 
-    private bool AddDateEvent(int dateNum, float weight)
+    private bool AddDateEvent(int dateNum, float comp, float weight)
     {
         // Purposefully add some spice of life once in a while
         bool flip = (Random.Range(0.0f, 1.0f) <= waterfallBias);
 
-        float dateSuccessChance = adjustedCompatibility + Random.Range(-1.0f * jitter, jitter) + bias + weight;
+        float dateSuccessChance = comp + Random.Range(-1.0f * jitter, jitter) + bias + weight;
 
         if(Random.Range(0.0f, 1.0f) <= dateSuccessChance && !flip) {
             events.Add(GetGoodEvent(dateNum, dateSuccessChance));
@@ -194,29 +194,47 @@ public class EventCreator : MonoBehaviour
         int weightSign = willMarry ? 1 : -1;
         int dateNum = 1;
         int dateIncreMin = willMarry ? 5 : 1;
+        bool hadGoodDate = false;
 
         // Generate the first date to use as a basis for the rest of the relationship
         float weight = weightSign * waterfallBias;
-        bool firstDateSuccess = AddDateEvent(dateNum, weight);
+        bool firstDateSuccess = AddDateEvent(dateNum, compatibility, weight);
 
         // Find how long we want this relationship to last
         // If first date was bad & we expect a break-up, we'll make the relationship shorter
+        // If the first date was bad & we expect marriage, we'll want time for them to make up
         // Otherwise, we want at least 3 dates for the arc to feel natural
-        int endEvent = !willMarry && !firstDateSuccess ?
-            FindEndingEvent(2, 2.0f * waterfallBias) : FindEndingEvent(3, -2.0f * waterfallBias);
+        int endEvent;
+        if(!willMarry && !firstDateSuccess) {
+            endEvent = FindEndingEvent(2, 2.0f * waterfallBias);
+        } else if(willMarry && !firstDateSuccess) {
+            endEvent = FindEndingEvent(4, -2.0f * waterfallBias);
+        } else {
+            endEvent = FindEndingEvent(3, -2.0f * waterfallBias);
+        }
         
         // Generate rest of dates
         // Reset the weight to match the waterfallBias pattern
+        hadGoodDate = hadGoodDate || firstDateSuccess;
         weight = firstDateSuccess ^ willMarry ? weightSign * waterfallBias : 0.0f;
         dateNum += (int) Random.Range(dateIncreMin, dateIncreMax);
 
         // Generate all but last date & ending event(s)
         // Since we want the last date & ending event(s) to match in outcome
         for(int i = 1; i < endEvent - 2; i++) {
-            bool result = AddDateEvent(dateNum, weight);
+            // Make sure we had at least one good date if they're getting married!!
+            bool result;
+            if(!hadGoodDate && i == endEvent - 3) {
+                events.Add(GetGoodEvent(dateNum, 1));
+                eventOutcomes.Add(true);
+                result = true;
+            } else {
+                result = AddDateEvent(dateNum, adjustedCompatibility, weight);
+            }
 
-            dateNum += (int) Random.Range(dateIncreMin, dateIncreMax);
+            hadGoodDate = hadGoodDate || result;
             weight = result ^ willMarry ? weight + (weightSign * waterfallBias) : -0.5f * weightSign * waterfallBias;
+            dateNum += (int) Random.Range(dateIncreMin, dateIncreMax);
         }
 
         // Generate event before break-up (good or bad depending on final),
@@ -245,8 +263,8 @@ public class EventCreator : MonoBehaviour
     private float AdjustCompatability() {
         // Pull randomness-used compatability to be more mid-ranged if it's very high or low
         // Makes for more interesting story-arcs :0
-        if(Mathf.Abs(marriageThreshold - compatibility) > waterfallBias) {
-            float adjustment = waterfallBias * 0.5f;
+        if(Mathf.Abs(marriageThreshold - compatibility) > waterfallBias * 0.75f) {
+            float adjustment = waterfallBias * 0.25f;
             if(compatibility < marriageThreshold) {
                 adjustment *= -1.0f;
             }
