@@ -927,7 +927,7 @@ MonoBehaviour:
   m_text: "\u201CWelcome to Pair of Hearts, where heartbreaks are a thing of the
     past!\"\n\nRead through the client's bio on the right, and find their perfect
     match from the 5 potential candidates on the left. Swipe right to bring them
-    together, and left to see other candidates."
+    together, down to read more about them, and left to see other candidates."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 398d748a12ecad645a34fe42fa5165a6, type: 2}
   m_sharedMaterial: {fileID: -6679965274131705015, guid: 398d748a12ecad645a34fe42fa5165a6,
@@ -997,12 +997,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1606258466}
-    characterCount: 260
+    characterCount: 290
     spriteCount: 0
-    spaceCount: 46
-    wordCount: 46
+    spaceCount: 52
+    wordCount: 52
     linkCount: 0
-    lineCount: 7
+    lineCount: 8
     pageCount: 1
     materialCount: 2
   m_isUsingLegacyAnimationComponent: 0
