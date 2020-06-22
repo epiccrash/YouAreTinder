@@ -69,21 +69,21 @@ public class PrefBasedEvents : UnitySingletonPersistent<PrefBasedEvents>
             new List<string> {
                 "* and ^ travelled to a neighboring city for their #! date. They loved the area and went to local shops." },
             new List<string> {
-                "* and ^ discussed travelling on their #! date. One of them wanted to go to the Arctic. The other one wanted to watch Netflix." }
+                "* and ^ discussed travel plans on their #! date. One of them wanted to go to the Arctic. The other one wanted to watch Netflix." }
             }
         },
         { "video_games", new List<List<string>> {
             new List<string> {
                 "* and ^ played The First of Us by Obedient Cats on their #! date. They bonded over the characters." },
             new List<string> {
-                "* and ^ played The First of Us by Obedient Cats on their #! date. One of them wasn't really interested."},
+                "* and ^ played The First of Us by Obedient Cats on their #! date. One of them didn't care."},
             }
         },
         { "kids", new List<List<string>> {
             new List<string> {
                 "* and ^ realized they both wanted to have kids on their #! date. They talked about baby names." },
             new List<string> {
-                "* and ^ talked about children on their #! date. They disagreed on whether children were demons or angels.", }
+                "* and ^ talked about kids on their #! date. One of them really didn't want to discuss it.", }
             }
         },
         { "long_term", new List<List<string>> {
