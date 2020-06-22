@@ -56,6 +56,10 @@ public class EventCreator : MonoBehaviour
     private List<string> events;
     private List<bool> eventOutcomes;
 
+    private string[] numberAdjectives = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", 
+                                          "eighth", "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth",
+                                          "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth"};
+
     private string GetDateDescriptor(int dateNum = 0, string descp = null) {
         string text;
         if (descp == null)
@@ -70,8 +74,15 @@ public class EventCreator : MonoBehaviour
         StringBuilder textB = new StringBuilder(text);
         textB.Replace("*", p1Name);
         textB.Replace("^", p2Name);
-        textB.Replace("!", dateNum.ToString());
+        textB.Replace("#!", numberAdjectives[dateNum - 1]);
         return textB.ToString().Replace('\n', ' ');
+    }
+
+    private string ConvertDateNumToString(int dateNum)
+    {
+        string dateNumString = "";
+
+        return dateNumString;
     }
     
     private string GetGoodEvent(int dateNum, float dateSuccessChance) {
@@ -224,11 +235,13 @@ public class EventCreator : MonoBehaviour
         for(int i = 1; i < endEvent - 2; i++) {
             // Make sure we had at least one good date if they're getting married!!
             bool result;
-            if(!hadGoodDate && i == endEvent - 3) {
+            if(!hadGoodDate && i == endEvent - 3)
+            {
                 events.Add(GetGoodEvent(dateNum, 1));
                 eventOutcomes.Add(true);
                 result = true;
-            } else {
+            } else
+            {
                 result = AddDateEvent(dateNum, adjustedCompatibility, weight);
             }
 

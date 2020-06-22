@@ -116,7 +116,7 @@ public class ProfileCardManager : UnitySingleton<ProfileCardManager>
 
         card.GetComponent<RectTransform>().anchoredPosition = NewCardWaitPoint.anchoredPosition;
         card.SetStartPoint(NewCardWaitPoint.anchoredPosition);
-        card.InitializeCard(chargenerator.Generate(null, Random.Range(0, 3)));
+        card.InitializeCard(chargenerator.Generate(null, Random.Range(0, 4)));
         return card;
     }
 
